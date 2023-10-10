@@ -58,7 +58,7 @@ const DeveloperDashboard: FC<{}> = ({}) => {
   );
   return (
     <>
-      <LeftMenu links={links} />
+      <LeftMenu links={links} initialStep={5} />
     </>
   );
 };

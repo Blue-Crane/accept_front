@@ -1,12 +1,22 @@
 import { Tooltip, TooltipProps } from '@mantine/core';
-import { FC, memo } from 'react';
+import { FC, memo, useMemo } from 'react';
 
-const Tip: FC<TooltipProps> = ({ children, ...tipProps }) => {
-  return (
-    <Tooltip
-      withArrow
-      arrowSize={7}
-      styles={{
+interface CustomTipProps extends TooltipProps {
+  floating?: boolean;
+}
+
+const Tip: FC<CustomTipProps> = ({
+  children,
+  floating,
+  ...tipProps
+}) => {
+  const componentProps: Omit<TooltipProps, 'children'> = useMemo(
+    () => ({
+      withArrow: true,
+      arrowSize: 7,
+      withinPortal: true,
+      disabled: tipProps.label === undefined,
+      styles: {
         tooltip: {
           backgroundColor: 'white',
           color: 'black',
@@ -15,9 +25,21 @@ const Tip: FC<TooltipProps> = ({ children, ...tipProps }) => {
         arrow: {
           border: '1px solid var(--dark5)',
         },
-      }}
-      {...tipProps}
-    >
+      },
+      ...tipProps,
+    }),
+    [tipProps]
+  );
+
+  if (floating)
+    return (
+      <Tooltip.Floating {...componentProps}>
+        <span>{children}</span>
+      </Tooltip.Floating>
+    );
+
+  return (
+    <Tooltip {...componentProps}>
       <span>{children}</span>
     </Tooltip>
   );

@@ -5,6 +5,7 @@ import { useLocale } from '@hooks/useLocale';
 import { useRouter } from 'next/router';
 import { ConfirmModal } from '@ui/modals';
 import ActivityGraph from './ActivityGraph/ActivityGraph';
+import styles from './analytics.module.css';
 
 const Analytics: FC<{}> = ({}) => {
   const { locale, lang } = useLocale();
@@ -23,7 +24,7 @@ const Analytics: FC<{}> = ({}) => {
   }, [lang, locale, router]);
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       <ConfirmModal
         confirm={clearAnalytics}
         buttonText={locale.delete}

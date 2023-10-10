@@ -2,7 +2,7 @@ export const getLocalDate = (date: Date) => {
   return timezoneDate(date).toLocaleString();
 };
 
-export const timezoneDate = (date: Date): Date => {
+export const timezoneDate = (date: Date | number): Date => {
   return new Date(
     new Date(date).getTime() -
       new Date().getTimezoneOffset() * 60 * 1000

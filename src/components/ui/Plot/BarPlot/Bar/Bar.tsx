@@ -14,6 +14,7 @@ const Bar: FC<{
   hideLabels?: boolean;
   hideRowLabels?: boolean;
   totalHeight: number;
+  totalWidth: number;
   hoverLabel?: callback<IPlotData, ReactNode>;
 }> = ({
   index,
@@ -26,12 +27,13 @@ const Bar: FC<{
   hideLabels = false,
   hideRowLabels = false,
   totalHeight,
+  totalWidth,
   hoverLabel = (item) => item.amount,
 }) => {
   const left_padding = hideRowLabels ? 0 : 20;
   const onEnter = useCallback(
     () => setTooltipLabel(hoverLabel(data)),
-    [setTooltipLabel, data.amount]
+    [setTooltipLabel, data, hoverLabel]
   );
   const onLeave = useCallback(
     () => setTooltipLabel(undefined),
@@ -54,8 +56,8 @@ const Bar: FC<{
           fill={data.color}
         />
         <rect
-          x={left_padding + index * (300 / length)}
-          width={300 / length}
+          x={left_padding + index * (totalWidth / length)}
+          width={totalWidth / length}
           y={totalHeight + 5}
           height={10}
           fill="white"
