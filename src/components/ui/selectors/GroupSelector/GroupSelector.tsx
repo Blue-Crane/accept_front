@@ -6,46 +6,56 @@ import { IGroup } from '@custom-types/data/IGroup';
 import inputStyles from '@styles/ui/input.module.css';
 import {
   ICustomTransferListData,
+  ICustomTransferListItem,
   ICustomTransferListItemComponent,
 } from '@custom-types/ui/basics/customTransferList';
+import { setter } from '@custom-types/ui/atomic';
+import { useRequest } from '@hooks/useRequest';
 
 const GroupSelector: FC<{
   form: any;
-  groups: IGroup[];
-  initialGroups: string[];
+  selectedGroups: string[];
+  setGroups: setter<string[]>;
   field: string;
   shrink?: boolean;
   width?: string;
-}> = ({
-  form,
-  groups: allGroups,
-  initialGroups,
-  field,
-  shrink,
-  width,
-}) => {
+}> = ({ form, selectedGroups, setGroups, field, shrink, width }) => {
   const { locale } = useLocale();
-  const [groups, setGroups] =
-    useState<ICustomTransferListData>(undefined);
+
+  const [data, setData] = useState([
+    [],
+    [],
+  ] as ICustomTransferListData);
+
+  const { data: allGroups } = useRequest<{}, IGroup[]>(
+    'group/list',
+    'GET',
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    10_000
+  );
 
   useEffect(() => {
-    let data: ICustomTransferListData = [[], []];
-
+    if (!allGroups) return;
+    let newData = [[], []] as ICustomTransferListData;
     for (let i = 0; i < allGroups.length; i++) {
-      const group = {
+      const item = {
         ...allGroups[i],
-        value: allGroups[i].spec,
+        value: allGroups[i].spec.toString(),
         sortValue: allGroups[i].name,
-      };
-      if (initialGroups.includes(group.spec)) {
-        data[1].push(group);
+      } as ICustomTransferListItem;
+      if (selectedGroups.includes(item.value)) {
+        // @ts-ignore
+        newData[1].push(item);
       } else {
-        data[0].push(group);
+        // @ts-ignore
+        newData[0].push(item);
       }
     }
-
-    setGroups(data);
-  }, [allGroups, initialGroups]);
+    setData(newData);
+  }, [allGroups, selectedGroups]);
 
   const itemComponent: ICustomTransferListItemComponent = useCallback(
     ({ item, onClick, index }) => {
@@ -71,7 +81,7 @@ const GroupSelector: FC<{
         field,
         data[1].map((item) => item.spec)
       );
-      setGroups(data);
+      setGroups(data[1].map((item) => item.value));
     },
     [form.setFieldValue] // eslint-disable-line
   );
@@ -81,7 +91,7 @@ const GroupSelector: FC<{
       <CustomTransferList
         {...form.getInputProps(field)}
         width={width}
-        value={groups}
+        value={data}
         onChange={onChange}
         titles={[
           locale.ui.groupSelector.unselected,

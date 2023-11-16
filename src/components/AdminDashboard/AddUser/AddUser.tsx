@@ -3,7 +3,6 @@ import {
   memo,
   useCallback,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import styles from './addUser.module.css';
@@ -63,8 +62,7 @@ const AddUser: FC<{}> = ({}) => {
     }
   >('user/addBundle', 'GET');
 
-  const groups = useMemo(() => (data ? data.groups : []), [data]);
-  const roles = useMemo(() => (data ? data.roles : []), [data]);
+  const [groups, setGroups] = useState([] as string[]);
 
   const handleSubmit = useCallback(() => {
     if (form.validate().hasErrors) {
@@ -93,8 +91,6 @@ const AddUser: FC<{}> = ({}) => {
       setHasErrors(false);
     }
   }, [form.errors]);
-
-  const initialGroups = useMemo(() => [], []);
 
   return (
     <div className={styles.wrapper}>
@@ -134,15 +130,14 @@ const AddUser: FC<{}> = ({}) => {
               <SingleRoleSelector
                 label={locale.auth.labels.role}
                 form={form}
-                roles={roles}
                 field="role"
               />
             </div>
             <div className={styles.groupWrapper}>
               <GroupSelector
                 form={form}
-                groups={groups}
-                initialGroups={initialGroups}
+                selectedGroups={groups}
+                setGroups={setGroups}
                 width={'80%'}
                 field="groups"
               />

@@ -114,12 +114,7 @@ const Form: FC<{
         pages={[
           <MainInfo key="1" form={form} />,
           <DescriptionInfo key="2" form={form} />,
-          <GroupsRoles
-            key="3"
-            form={form}
-            groups={groups}
-            roles={roles}
-          />,
+          <GroupsRoles key="3" form={form} />,
           <Users key="4" form={form} users={users} />,
         ]}
         labels={locale.notification.form.steps.labels}

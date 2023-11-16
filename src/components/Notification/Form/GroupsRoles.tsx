@@ -1,20 +1,19 @@
-import { IRole } from '@custom-types/data/atomic';
-import { IGroup } from '@custom-types/data/IGroup';
 import { GroupSelector, RoleSelector } from '@ui/selectors';
-import { FC, memo, useMemo } from 'react';
+import { FC, memo, useState } from 'react';
 import { Overlay, Switch } from '@ui/basics';
 import { useLocale } from '@hooks/useLocale';
 
 const GroupsRoles: FC<{
   form: any;
-  groups: IGroup[];
-  roles: IRole[];
-}> = ({ form, groups, roles }) => {
+}> = ({ form }) => {
   const { locale } = useLocale();
 
-  const initialRoles = useMemo(() => form.values.roles, []); //eslint-disable-line
-  const initialGroups = useMemo(() => form.values.groups, []); //eslint-disable-line
-
+  const [roles, setRoles] = useState(
+    form.values.roles.map((item: number) => item.toString())
+  );
+  const [groups, setGroups] = useState(
+    form.values.roles.map((item: number) => item.toString())
+  );
   return (
     <>
       <Switch
@@ -32,14 +31,14 @@ const GroupsRoles: FC<{
         {form.values.broadcast && <Overlay />}
         <RoleSelector
           form={form}
-          roles={roles}
-          initialRoles={initialRoles}
+          selectedRoles={roles}
+          setRoles={setRoles}
           field={'roles'}
         />
         <GroupSelector
           form={form}
-          groups={groups}
-          initialGroups={initialGroups}
+          selectedGroups={groups}
+          setGroups={setGroups}
           field={'groups'}
         />
       </div>

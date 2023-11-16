@@ -4,7 +4,6 @@ import {
   memo,
   useCallback,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
@@ -14,29 +13,56 @@ import { capitalize } from '@utils/capitalize';
 import inputStyles from '@styles/ui/input.module.css';
 import {
   ICustomTransferListData,
+  ICustomTransferListItem,
   ICustomTransferListItemComponent,
 } from '@custom-types/ui/basics/customTransferList';
+import { setter } from '@custom-types/ui/atomic';
+import { useRequest } from '@hooks/useRequest';
 
 const RoleSelector: FC<{
   form: any;
-  roles: IRole[];
-  initialRoles: number[];
+  selectedRoles: string[];
+  setRoles: setter<string[]>;
   field: string;
   shrink?: boolean;
   width?: string;
-}> = ({
-  form,
-  roles: allRoles,
-  initialRoles,
-  field,
-  shrink,
-  width,
-}) => {
+}> = ({ form, selectedRoles, setRoles, field, shrink, width }) => {
   const { locale } = useLocale();
 
-  const initialRolesInner = useMemo(() => initialRoles, []); //eslint-disable-line
-  const [roles, setRoles] =
-    useState<ICustomTransferListData>(undefined);
+  const [data, setData] = useState([
+    [],
+    [],
+  ] as ICustomTransferListData);
+
+  const { data: allRoles, loading } = useRequest<{}, IRole[]>(
+    'role',
+    'GET',
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    10_000
+  );
+
+  useEffect(() => {
+    if (!allRoles) return;
+    let newData = [[], []] as ICustomTransferListData;
+    for (let i = 0; i < allRoles.length; i++) {
+      const item = {
+        ...allRoles[i],
+        value: allRoles[i].spec.toString(),
+        sortValue: allRoles[i].accessLevel,
+      } as ICustomTransferListItem;
+      if (selectedRoles.includes(item.value)) {
+        // @ts-ignore
+        newData[1].push(item);
+      } else {
+        // @ts-ignore
+        newData[0].push(item);
+      }
+    }
+    setData(newData);
+  }, [allRoles, selectedRoles]);
 
   const onChange = useCallback(
     (data: ICustomTransferListData) => {
@@ -45,28 +71,10 @@ const RoleSelector: FC<{
         field,
         data[1].map((role) => role.spec)
       ),
-        setRoles(data);
+        setRoles(data[1].map((item) => item.value));
     },
     [field, form.setFieldValue] //eslint-disable-line
   );
-
-  useEffect(() => {
-    let data: ICustomTransferListData = [[], []];
-
-    for (let i = 0; i < allRoles.length; i++) {
-      const role = {
-        ...allRoles[i],
-        value: allRoles[i].spec.toString(),
-        sortValue: allRoles[i].name,
-      };
-      if (initialRolesInner.includes(role.spec)) {
-        data[1].push(role);
-      } else {
-        data[0].push(role);
-      }
-    }
-    setRoles(data);
-  }, [initialRolesInner, allRoles]);
 
   const itemComponent: ICustomTransferListItemComponent = useCallback(
     ({ item, onClick, index }) => {
@@ -89,7 +97,7 @@ const RoleSelector: FC<{
     <div>
       <CustomTransferList
         {...form.getInputProps(field)}
-        value={roles}
+        value={data}
         onChange={onChange}
         shrink={shrink}
         titles={[

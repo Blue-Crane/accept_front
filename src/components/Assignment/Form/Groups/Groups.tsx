@@ -1,19 +1,18 @@
-import { FC, memo, useMemo } from 'react';
+import { FC, memo, useState } from 'react';
 import { GroupSelector } from '@ui/selectors';
-import { IGroup } from '@custom-types/data/IGroup';
 
-const Groups: FC<{ form: any; groups: IGroup[] }> = ({
-  form,
-  groups,
-}) => {
-  const initialGroups = useMemo(() => form.values.groups, []); //eslint-disable-line
+const Groups: FC<{ form: any }> = ({ form }) => {
+  const [groups, setGroups] = useState(
+    form.values.roles.map((item: number) => item.toString())
+  );
+
   return (
     <>
       <GroupSelector
         width="80%"
         form={form}
-        groups={groups}
-        initialGroups={initialGroups}
+        selectedGroups={groups}
+        setGroups={setGroups}
         field={'groups'}
       />
     </>

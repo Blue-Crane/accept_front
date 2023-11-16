@@ -2,7 +2,6 @@ import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useEffect } from 'react';
 import { callback } from '@custom-types/ui/atomic';
 import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
-import { IGroup } from '@custom-types/data/IGroup';
 import MainInfo from './MainInfo/MainInfo';
 import Groups from './Groups/Groups';
 import Origin from './Origin/Origin';
@@ -24,14 +23,12 @@ const Form: FC<{
   handleSubmit: callback<UseFormReturnType<any>>;
   initialValues: any;
   buttonLabel: string;
-  groups: IGroup[];
   shouldNotify: boolean;
   assignment_schemas: IAssignmentSchemaDisplay[];
 }> = ({
   handleSubmit,
   initialValues,
   buttonLabel,
-  groups,
   assignment_schemas,
   shouldNotify,
 }) => {
@@ -83,7 +80,7 @@ const Form: FC<{
         stepFields={stepFields}
         pages={[
           <MainInfo key={0} form={form} />,
-          <Groups key={1} form={form} groups={groups} />,
+          <Groups key={1} form={form} />,
           <Origin
             key={2}
             form={form}
