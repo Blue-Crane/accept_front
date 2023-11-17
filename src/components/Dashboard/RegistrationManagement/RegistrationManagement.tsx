@@ -27,7 +27,6 @@ const RegistrationManagement: FC<{
           spec={spec}
           refetch={refetch}
           initialParticipants={participants}
-          users={users}
           loading={loading}
         />
       ) : (

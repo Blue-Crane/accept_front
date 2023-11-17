@@ -51,7 +51,6 @@ export interface IUserListBundle {
 
 export interface IUserDisplay {
   login: string;
-  role: IRole;
   shortName: string;
 }
 

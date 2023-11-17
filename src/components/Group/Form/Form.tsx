@@ -72,10 +72,9 @@ const Form: FC<{
         </div>
       )}
       <UserSelector
-        setFieldValue={setFieldValue}
+        setUsers={setFieldValue}
         inputProps={initialProps}
-        users={users}
-        initialUsers={form.values.members}
+        selectedUsers={form.values.members}
       />
       <div className={styles.buttonWrapper}>
         <Button

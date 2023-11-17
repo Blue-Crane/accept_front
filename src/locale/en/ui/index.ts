@@ -6,6 +6,7 @@ import { userSelector } from './userSelector';
 import { groupSelector } from './groupSelector';
 import { roleSelector } from './roleSelector';
 import { taskSelector } from './taskSelector';
+import { organizationSelector } from './organizationSelector';
 import { schemasSelector } from './schemasSelector';
 import { dropzone } from './dropzone';
 import { taskTest } from './taskTest';
@@ -22,4 +23,5 @@ export const ui = {
   schemasSelector,
   dropzone,
   taskTest,
+  organizationSelector,
 };

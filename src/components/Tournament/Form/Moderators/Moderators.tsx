@@ -17,10 +17,9 @@ const Moderators: FC<{ form: any; users: IUserDisplay[] }> = ({
   return (
     <>
       <UserSelector
-        setFieldValue={setFieldValue}
+        setUsers={setFieldValue}
         inputProps={initialProps}
-        users={users}
-        initialUsers={form.values.moderators}
+        selectedUsers={form.values.moderators}
       />
     </>
   );

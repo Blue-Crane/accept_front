@@ -3,6 +3,7 @@ import { table } from './table';
 import { tagSelector } from './tagSelector';
 import { langSelector } from './langSelector';
 import { userSelector } from './userSelector';
+import { organizationSelector } from './organizationSelector';
 import { groupSelector } from './groupSelector';
 import { roleSelector } from './roleSelector';
 import { taskSelector } from './taskSelector';
@@ -18,6 +19,7 @@ export const ui = {
   userSelector,
   groupSelector,
   roleSelector,
+  organizationSelector,
   taskSelector,
   schemasSelector,
   dropzone,

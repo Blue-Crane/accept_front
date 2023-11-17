@@ -7,6 +7,8 @@ import GroupSelector from './GroupSelector/GroupSelector';
 import RoleSelector from './RoleSelector/RoleSelector';
 import SingleRoleSelector from './SingleRoleSelector/SingleRoleSelector';
 import AssignmentSchemaSelector from './AssignmentSchemaSelector/AssignmentSchemaSelector';
+import OrganizationSelector from './OrganizationSelector/OrganizationSelector';
+import SingleOrganizationSelector from './SingleOrganizationSelector/SingleOrganizationSelector';
 
 export {
   TaskSelector,
@@ -18,4 +20,6 @@ export {
   RoleSelector,
   SingleRoleSelector,
   AssignmentSchemaSelector,
+  OrganizationSelector,
+  SingleOrganizationSelector,
 };

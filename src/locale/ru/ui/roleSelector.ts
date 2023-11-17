@@ -1,4 +1,4 @@
 export const roleSelector = {
-  unselected: 'Выбранные роли',
-  selected: 'Роли',
+  selected: 'Выбранные роли',
+  unselected: 'Роли',
 };

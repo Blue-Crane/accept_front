@@ -3,7 +3,6 @@ import { ITableColumn } from '@custom-types/ui/ITable';
 
 import tableStyles from '@styles/ui/customTable.module.css';
 import { ILocale } from '@custom-types/ui/ILocale';
-import { capitalize } from '@utils/capitalize';
 
 import styles from './participantsList.module.css';
 import { useLocale } from '@hooks/useLocale';
@@ -91,19 +90,6 @@ const refactorUser = (user: IParticipant): any => ({
   shortName: {
     value: user.shortName,
     display: user.shortName,
-  },
-  role: {
-    value: user.role,
-    display: (
-      <div
-        style={{
-          color:
-            user.role.accessLevel > 50 ? 'var(--accent)' : 'black',
-        }}
-      >
-        {capitalize(user.role.name)}
-      </div>
-    ),
   },
 });
 

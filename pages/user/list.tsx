@@ -4,9 +4,7 @@ import { ReactNode } from 'react';
 import tableStyles from '@styles/ui/customTable.module.css';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { IUser } from '@custom-types/data/IUser';
-import { capitalize } from '@utils/capitalize';
 import UserList from '@ui/UserList/UserList';
-import { accessLevels } from '@constants/protectedRoutes';
 import Title from '@ui/Title/Title';
 import { useLocale } from '@hooks/useLocale';
 import Link from 'next/link';
@@ -45,22 +43,22 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     hidden: false,
     size: 3,
   },
-  {
-    label: locale.users.list.role,
-    key: 'role',
-    sortable: true,
-    sortFunction: (a: any, b: any) =>
-      a.role.value.spec > b.role.value.spec
-        ? 1
-        : a.role.value.spec == b.role.value.spec
-        ? 0
-        : -1,
-    sorted: 0,
-    allowMiddleState: true,
-    hidable: true,
-    hidden: false,
-    size: 2,
-  },
+  // {
+  //   label: locale.users.list.role,
+  //   key: 'role',
+  //   sortable: true,
+  //   sortFunction: (a: any, b: any) =>
+  //     a.role.value.spec > b.role.value.spec
+  //       ? 1
+  //       : a.role.value.spec == b.role.value.spec
+  //       ? 0
+  //       : -1,
+  //   sorted: 0,
+  //   allowMiddleState: true,
+  //   hidable: true,
+  //   hidden: false,
+  //   size: 2,
+  // },
 ];
 
 const refactorUser = (user: IUser): any => ({
@@ -92,21 +90,21 @@ const refactorUser = (user: IUser): any => ({
     value: user.shortName,
     display: user.shortName,
   },
-  role: {
-    value: user.role,
-    display: (
-      <div
-        style={{
-          color:
-            user.role.accessLevel >= accessLevels.admin
-              ? 'var(--accent)'
-              : 'black',
-        }}
-      >
-        {capitalize(user.role.name)}
-      </div>
-    ),
-  },
+  // role: {
+  //   value: user.role,
+  //   display: (
+  //     <div
+  //       style={{
+  //         color:
+  //           user.role.accessLevel >= accessLevels.admin
+  //             ? 'var(--accent)'
+  //             : 'black',
+  //       }}
+  //     >
+  //       {capitalize(user.role.name)}
+  //     </div>
+  //   ),
+  // },
 });
 
 function UsersListPage() {

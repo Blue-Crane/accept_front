@@ -1,9 +1,9 @@
-import { GroupSelector, RoleSelector } from '@ui/selectors';
+import { OrganizationSelector, RoleSelector } from '@ui/selectors';
 import { FC, memo, useState } from 'react';
 import { Overlay, Switch } from '@ui/basics';
 import { useLocale } from '@hooks/useLocale';
 
-const GroupsRoles: FC<{
+const OrganizationsRoles: FC<{
   form: any;
 }> = ({ form }) => {
   const { locale } = useLocale();
@@ -11,9 +11,11 @@ const GroupsRoles: FC<{
   const [roles, setRoles] = useState(
     form.values.roles.map((item: number) => item.toString())
   );
-  const [groups, setGroups] = useState(
-    form.values.roles.map((item: number) => item.toString())
+
+  const [organizations, setOrganizations] = useState(
+    form.values.organizations
   );
+
   return (
     <>
       <Switch
@@ -27,6 +29,14 @@ const GroupsRoles: FC<{
         }
         {...form.getInputProps('broadcast', { type: 'checkbox' })}
       />
+
+      <OrganizationSelector
+        url={'organization/admin'}
+        form={form}
+        selectedOrganizations={organizations}
+        setOrganizations={setOrganizations}
+        field={'organizations'}
+      />
       <div style={{ position: 'relative' }}>
         {form.values.broadcast && <Overlay />}
         <RoleSelector
@@ -35,15 +45,9 @@ const GroupsRoles: FC<{
           setRoles={setRoles}
           field={'roles'}
         />
-        <GroupSelector
-          form={form}
-          selectedGroups={groups}
-          setGroups={setGroups}
-          field={'groups'}
-        />
       </div>
     </>
   );
 };
 
-export default memo(GroupsRoles);
+export default memo(OrganizationsRoles);

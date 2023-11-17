@@ -1,13 +1,6 @@
 import { useLocale } from '@hooks/useLocale';
 import { ILocale } from '@custom-types/ui/ILocale';
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
 import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
 import styles from './userSelector.module.css';
 import { IUserDisplay } from '@custom-types/data/IUser';
@@ -16,23 +9,23 @@ import { Eye } from 'tabler-icons-react';
 import inputStyles from '@styles/ui/input.module.css';
 import {
   ICustomTransferListData,
+  ICustomTransferListItem,
   ICustomTransferListItemComponent,
 } from '@custom-types/ui/basics/customTransferList';
+import { setter } from '@custom-types/ui/atomic';
+import { useRequest } from '@hooks/useRequest';
 
 const UserSelector: FC<{
-  setFieldValue: (_: string[]) => void;
-  inputProps?: any;
-  users: IUserDisplay[];
-  initialUsers?: string[];
+  selectedUsers: string[];
+  setUsers: setter<string[]>;
   shrink?: boolean;
   titles?: (_: ILocale) => [string, string];
   width?: string;
   height?: string;
+  inputProps?: any;
 }> = ({
-  setFieldValue,
-  inputProps = {},
-  users: allUsers,
-  initialUsers,
+  selectedUsers,
+  setUsers,
   shrink,
   titles = (locale: ILocale) => [
     locale.ui.userSelector.unselected,
@@ -40,48 +33,51 @@ const UserSelector: FC<{
   ],
   width,
   height,
+  inputProps,
 }) => {
   const { locale } = useLocale();
 
-  const initialUsersInner = useMemo(
-    () => (initialUsers ? [...initialUsers] : []),
-    [initialUsers]
+  const [data, setData] = useState([
+    [],
+    [],
+  ] as ICustomTransferListData);
+
+  const { data: allUsers } = useRequest<{}, IUserDisplay[]>(
+    'user/list-display',
+    'GET',
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    10_000
   );
-
-  const [users, setUsers] =
-    useState<ICustomTransferListData>(undefined);
-
   const onChange = useCallback(
     (data: ICustomTransferListData) => {
       if (!!!data) return;
-      setFieldValue(data[1].map((item) => item.login));
-      setUsers(data);
+      setUsers(data[1].map((item) => item.value));
     },
-    [setFieldValue]
+    [setUsers]
   );
 
   useEffect(() => {
-    let data: ICustomTransferListData = [[], []];
-
+    if (!allUsers) return;
+    let newData = [[], []] as ICustomTransferListData;
     for (let i = 0; i < allUsers.length; i++) {
-      if (
-        initialUsersInner.find((login) => login === allUsers[i].login)
-      ) {
-        data[1].push({
-          ...allUsers[i],
-          value: allUsers[i].login,
-          sortValue: allUsers[i].login,
-        });
+      const item = {
+        ...allUsers[i],
+        value: allUsers[i].login,
+        sortValue: allUsers[i].login,
+      } as ICustomTransferListItem;
+      if (selectedUsers.includes(item.value)) {
+        // @ts-ignore
+        newData[1].push(item);
       } else {
-        data[0].push({
-          ...allUsers[i],
-          value: allUsers[i].login,
-          sortValue: allUsers[i].login,
-        });
+        // @ts-ignore
+        newData[0].push(item);
       }
     }
-    setUsers(data);
-  }, [allUsers, initialUsersInner]);
+    setData(newData);
+  }, [allUsers, selectedUsers]);
 
   const [displayedField, setDisplayedField] = useState<
     'shortName' | 'login'
@@ -139,11 +135,11 @@ const UserSelector: FC<{
         titles={titles(locale)}
         itemComponent={itemComponent}
         searchKeys={['login', 'name', 'shortName']}
-        {...inputProps}
-        value={users}
+        value={data}
         onChange={onChange}
         width={width}
         height={height}
+        {...inputProps}
       />
     </div>
   );

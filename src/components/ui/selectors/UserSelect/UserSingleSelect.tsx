@@ -60,7 +60,6 @@ const UserSingleSelect: FC<UserSelectProps> = ({
             login: item.login,
             label: item.shortName,
             value: item.login,
-            role: item.role.name,
           } as UserItemProps)
       ),
     [users]

@@ -1,8 +1,8 @@
 import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
 import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
-import styles from './groupSelector.module.css';
-import { IGroup } from '@custom-types/data/IGroup';
+import styles from './organizationSelector.module.css';
+import { capitalize } from '@utils/capitalize';
 import inputStyles from '@styles/ui/input.module.css';
 import {
   ICustomTransferListData,
@@ -11,15 +11,25 @@ import {
 } from '@custom-types/ui/basics/customTransferList';
 import { setter } from '@custom-types/ui/atomic';
 import { useRequest } from '@hooks/useRequest';
+import { IOrganizationDisplay } from '@custom-types/data/IOrganization';
 
-const GroupSelector: FC<{
+const OrganizationSelector: FC<{
+  url: string;
   form: any;
-  selectedGroups: string[];
-  setGroups: setter<string[]>;
   field: string;
+  selectedOrganizations: string[];
+  setOrganizations: setter<string[]>;
   shrink?: boolean;
   width?: string;
-}> = ({ form, selectedGroups, setGroups, field, shrink, width }) => {
+}> = ({
+  url,
+  form,
+  selectedOrganizations,
+  setOrganizations,
+  field,
+  shrink,
+  width,
+}) => {
   const { locale } = useLocale();
 
   const [data, setData] = useState([
@@ -27,26 +37,21 @@ const GroupSelector: FC<{
     [],
   ] as ICustomTransferListData);
 
-  const { data: allGroups } = useRequest<{}, IGroup[]>(
-    'group/list',
-    'GET',
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    10_000
-  );
+  const { data: allOrganizations, loading } = useRequest<
+    {},
+    IOrganizationDisplay[]
+  >(url, 'GET', undefined, undefined, undefined, undefined, 10_000);
 
   useEffect(() => {
-    if (!allGroups) return;
+    if (!allOrganizations) return;
     let newData = [[], []] as ICustomTransferListData;
-    for (let i = 0; i < allGroups.length; i++) {
+    for (let i = 0; i < allOrganizations.length; i++) {
       const item = {
-        ...allGroups[i],
-        value: allGroups[i].spec,
-        sortValue: allGroups[i].name,
+        ...allOrganizations[i],
+        value: allOrganizations[i].spec,
+        sortValue: allOrganizations[i].title,
       } as ICustomTransferListItem;
-      if (selectedGroups.includes(item.value)) {
+      if (selectedOrganizations.includes(item.value)) {
         // @ts-ignore
         newData[1].push(item);
       } else {
@@ -55,7 +60,19 @@ const GroupSelector: FC<{
       }
     }
     setData(newData);
-  }, [allGroups, selectedGroups]);
+  }, [allOrganizations, selectedOrganizations]);
+
+  const onChange = useCallback(
+    (data: ICustomTransferListData) => {
+      if (!!!data) return;
+      form.setFieldValue(
+        field,
+        data[1].map((role) => role.spec)
+      ),
+        setOrganizations(data[1].map((item) => item.value));
+    },
+    [field, form.setFieldValue] //eslint-disable-line
+  );
 
   const itemComponent: ICustomTransferListItemComponent = useCallback(
     ({ item, onClick, index }) => {
@@ -67,42 +84,30 @@ const GroupSelector: FC<{
           }`}
           onClick={onClick}
         >
-          {item.name}
+          {capitalize(item.title)}
         </div>
       );
     },
     [shrink]
   );
 
-  const onChange = useCallback(
-    (data: ICustomTransferListData) => {
-      if (!!!data) return;
-      form.setFieldValue(
-        field,
-        data[1].map((item) => item.spec)
-      );
-      setGroups(data[1].map((item) => item.value));
-    },
-    [form.setFieldValue] // eslint-disable-line
-  );
-
   return (
     <div>
       <CustomTransferList
         {...form.getInputProps(field)}
-        width={width}
         value={data}
         onChange={onChange}
+        shrink={shrink}
         titles={[
-          locale.ui.groupSelector.unselected,
-          locale.ui.groupSelector.selected,
+          locale.ui.organizationSelector.unselected,
+          locale.ui.organizationSelector.selected,
         ]}
         itemComponent={itemComponent}
-        searchKeys={['name']}
-        shrink={shrink}
+        searchKeys={['title', 'spec']}
+        width={width}
       />
     </div>
   );
 };
 
-export default memo(GroupSelector);
+export default memo(OrganizationSelector);

@@ -2,7 +2,6 @@ import { FC, memo, useCallback, useState } from 'react';
 import { ITableColumn } from '@custom-types/ui/ITable';
 import tableStyles from '@styles/ui/customTable.module.css';
 import { ILocale } from '@custom-types/ui/ILocale';
-import { capitalize } from '@utils/capitalize';
 import UserList from '@ui/UserList/UserList';
 import { IParticipant } from '@custom-types/data/IUser';
 import styles from './participantsList.module.css';
@@ -121,19 +120,6 @@ const refactorUser = (
   shortName: {
     value: user.shortName,
     display: user.shortName,
-  },
-  role: {
-    value: user.role,
-    display: (
-      <div
-        style={{
-          color:
-            user.role.accessLevel > 50 ? 'var(--accent)' : 'black',
-        }}
-      >
-        {capitalize(user.role.name)}
-      </div>
-    ),
   },
   ban: {
     value: user.banned,

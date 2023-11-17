@@ -7,7 +7,6 @@ export interface UserItemProps
   extends React.ComponentPropsWithoutRef<'div'> {
   login: string;
   label: string;
-  role: string;
   value: string;
 }
 

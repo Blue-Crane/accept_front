@@ -109,9 +109,8 @@ const Team: FC<{
         {...form.getInputProps('teamName')}
       />
       <UserSelector
-        users={localUsers}
-        initialUsers={form.values.participants}
-        setFieldValue={(participants) =>
+        selectedUsers={form.values.participants}
+        setUsers={(participants) =>
           form.setFieldValue('participants', participants)
         }
         titles={(locale: ILocale) => [

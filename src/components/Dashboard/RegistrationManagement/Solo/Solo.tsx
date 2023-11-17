@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useEffect, useState } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 import { ILocale } from '@custom-types/ui/ILocale';
 import { Button, LoadingOverlay } from '@ui/basics';
 import { UserSelector } from '@ui/selectors';
@@ -6,22 +6,18 @@ import styles from '../registrationManagement.module.css';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { useLocale } from '@hooks/useLocale';
 import { setter } from '@custom-types/ui/atomic';
-import { IUserDisplay } from '@custom-types/data/IUser';
 
 const Solo: FC<{
   spec: string;
   refetch: setter<boolean>;
-  users: IUserDisplay[];
   initialParticipants: string[];
   loading: boolean;
-}> = ({ spec, refetch, users, loading, initialParticipants }) => {
+}> = ({ spec, refetch, loading, initialParticipants }) => {
   const { locale, lang } = useLocale();
 
-  const [participants, setParticipants] = useState<string[]>([]);
-
-  useEffect(() => {
-    setParticipants(initialParticipants);
-  }, [initialParticipants]);
+  const [participants, setParticipants] = useState<string[]>(
+    initialParticipants
+  );
 
   const handleRegister = useCallback(
     (logins: string[]) => {
@@ -50,9 +46,8 @@ const Solo: FC<{
         }}
       >
         <UserSelector
-          users={users}
-          initialUsers={participants}
-          setFieldValue={setParticipants}
+          selectedUsers={participants}
+          setUsers={setParticipants}
           titles={(locale: ILocale) => [
             locale.dashboard.tournament.registrationManagementSelector
               .users,
