@@ -1,4 +1,4 @@
-import { IGroup } from '@custom-types/data/IGroup';
+import { IGroupAdd } from '@custom-types/data/IGroup';
 import { useLocale } from '@hooks/useLocale';
 import { Button, Icon, MultiSelect, NumberInput } from '@ui/basics';
 import { requestWithNotify } from '@utils/requestWithNotify';
@@ -67,7 +67,7 @@ const AddGrades: FC<{}> = ({}) => {
       grade.letters.forEach((letter) => {
         if (grade.number > 0 && grade.number < 12)
           requestWithNotify<
-            { group: IGroup; members: string[] },
+            { group: IGroupAdd; members: string[] },
             boolean
           >(
             'group/add',
@@ -80,6 +80,7 @@ const AddGrades: FC<{}> = ({}) => {
                 spec: '',
                 name: `${grade.number} ${letter}`,
                 readonly: true,
+                organization: '',
               },
               members: [],
             }

@@ -16,15 +16,18 @@ import { ILocale } from '@custom-types/ui/ILocale';
 import { BaseSearch } from '@custom-types/data/request';
 import Fuse from 'fuse.js';
 import { customTableSort } from '@utils/customTableSort';
-import { IGroupDisplay } from '@custom-types/data/IGroup';
+import { IGroupDisplayList } from '@custom-types/data/IGroup';
 
 interface Item {
   value: any;
   display: string | ReactNode;
 }
 
-interface IGroupDisplayList
-  extends Omit<IGroupDisplay, 'title' | 'participants' | 'readonly'> {
+interface IGroupDisplayListItem
+  extends Omit<
+    IGroupDisplayList,
+    'title' | 'participants' | 'readonly'
+  > {
   title: Item;
   participants: Item;
   readonly: Item;
@@ -36,7 +39,7 @@ const GroupsList: FC<{
   url: string;
   classNames?: any;
   initialColumns: (_: ILocale) => ITableColumn[];
-  refactorGroup: (_: IGroupDisplay) => any;
+  refactorGroup: (_: IGroupDisplayList) => any;
   noDefault?: boolean;
   empty?: ReactNode;
   defaultRowsOnPage?: number;
@@ -63,18 +66,18 @@ const GroupsList: FC<{
     [initialColumns, locale]
   );
 
-  const [groups, setGroups] = useState<IGroupDisplayList[]>([]);
+  const [groups, setGroups] = useState<IGroupDisplayListItem[]>([]);
 
   const processData = useCallback(
-    (response: IGroupDisplay[]): IGroupDisplayList[] =>
+    (response: IGroupDisplayList[]): IGroupDisplayListItem[] =>
       response.map((item) => refactorGroup(item)),
     [refactorGroup]
   );
 
   const { data, loading } = useRequest<
     {},
-    IGroupDisplay[],
-    IGroupDisplayList[]
+    IGroupDisplayList[],
+    IGroupDisplayListItem[]
   >(url, 'GET', undefined, processData);
 
   const [searchParams, setSearchParams] = useState<BaseSearch>({
@@ -90,7 +93,7 @@ const GroupsList: FC<{
   });
 
   const applyFilters = useCallback(
-    (data: IGroupDisplayList[]) => {
+    (data: IGroupDisplayListItem[]) => {
       var list = [...data];
       const fuse = new Fuse(list, {
         keys: searchParams.search_params.keys,

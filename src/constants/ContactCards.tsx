@@ -18,8 +18,8 @@ export const cardContent: (_: ILocale) => IContactCard[] = (
     contacts: [
       {
         icon: <Mail size={iconSize} />,
-        text: 'bluecrane.accept@gmail.com',
-        href: 'mailto:bluecrane.accept@gmail.com',
+        text: 'paradise.crane.accept@gmail.com',
+        href: 'mailto:paradise.crane.accept@gmail.com',
       },
     ],
   },

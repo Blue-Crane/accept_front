@@ -2,7 +2,7 @@ import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useCallback, useEffect, useState } from 'react';
 import CustomTransferList from '@ui/basics/CustomTransferList/CustomTransferList';
 import styles from './groupSelector.module.css';
-import { IGroup } from '@custom-types/data/IGroup';
+import { IGroupDisplay } from '@custom-types/data/IGroup';
 import inputStyles from '@styles/ui/input.module.css';
 import {
   ICustomTransferListData,
@@ -27,7 +27,7 @@ const GroupSelector: FC<{
     [],
   ] as ICustomTransferListData);
 
-  const { data: allGroups } = useRequest<{}, IGroup[]>(
+  const { data: allGroups } = useRequest<{}, IGroupDisplay[]>(
     'group/list',
     'GET',
     undefined,

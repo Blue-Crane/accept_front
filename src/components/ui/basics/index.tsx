@@ -31,6 +31,7 @@ import CopyButton from './CopyButton/CopyButton';
 import CopyIcon from './CopyIcon/CopyIcon';
 import UserAvatar from './UserAvatar/UserAvatar';
 import CustomTransferList from './CustomTransferList/CustomTransferList';
+import Badge from './Badge/Badge';
 
 export {
   Button,
@@ -66,4 +67,5 @@ export {
   CopyIcon,
   UserAvatar,
   CustomTransferList,
+  Badge,
 };

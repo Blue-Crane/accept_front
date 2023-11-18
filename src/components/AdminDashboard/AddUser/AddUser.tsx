@@ -1,15 +1,9 @@
-import {
-  FC,
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
 import styles from './addUser.module.css';
 import { useForm } from '@mantine/form';
 import { Button, TextInput } from '@ui/basics';
 import { GroupSelector, SingleRoleSelector } from '@ui/selectors';
-import { IGroup } from '@custom-types/data/IGroup';
+import { IGroupDisplay } from '@custom-types/data/IGroup';
 import { IRole } from '@custom-types/data/atomic';
 import { useRequest } from '@hooks/useRequest';
 import { useLocale } from '@hooks/useLocale';
@@ -57,7 +51,7 @@ const AddUser: FC<{}> = ({}) => {
   const { data, loading } = useRequest<
     {},
     {
-      groups: IGroup[];
+      groups: IGroupDisplay[];
       roles: IRole[];
     }
   >('user/addBundle', 'GET');

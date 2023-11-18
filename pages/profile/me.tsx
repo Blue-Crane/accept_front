@@ -39,6 +39,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: {
         user: profileData.user,
+        organizations: profileData.organizations,
         attempt_info: profileData.attempt_info,
         task_info: profileData.task_info,
         rating_info: profileData.rating_info,

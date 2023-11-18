@@ -24,6 +24,7 @@ import { useRouter } from 'next/router';
 import { IFullProfileBundle } from '@custom-types/data/IProfileInfo';
 
 const Profile: FC<IFullProfileBundle> = ({
+  organizations,
   user,
   attempt_info,
   task_info,
@@ -41,6 +42,7 @@ const Profile: FC<IFullProfileBundle> = ({
       {
         page: (
           <ProfileInfo
+            organizations={organizations}
             user={user}
             attempt_info={attempt_info}
             task_info={task_info}

@@ -3,7 +3,7 @@ import {
   IAssignmentSchemaDisplay,
 } from './IAssignmentSchema';
 import { IAssignmentStatus } from './atomic';
-import { IGroup } from './IGroup';
+import { IGroupDisplay } from './IGroup';
 import { IAttemptDisplay } from './IAttempt';
 import { ITag } from './ITag';
 export interface IAssignment extends IAssignmentSchema {
@@ -15,7 +15,7 @@ export interface IAssignment extends IAssignmentSchema {
   start: Date;
   end: Date;
 
-  groups: IGroup[];
+  groups: IGroupDisplay[];
 }
 
 export interface IAssignmentAdd {
@@ -32,12 +32,12 @@ export interface IAssignmentAdd {
 }
 export interface IAssignmentAddBundle {
   assignment_schemas: IAssignmentSchemaDisplay[];
-  groups: IGroup[];
+  groups: IGroupDisplay[];
 }
 
 export interface IAssignmentEditBundle {
   assignment_schemas: IAssignmentSchemaDisplay[];
-  groups: IGroup[];
+  groups: IGroupDisplay[];
   assignment: IAssignmentAdd;
 }
 
@@ -59,19 +59,13 @@ export interface IAssignmentDisplay {
   tags: ITag[];
   starter: string;
   origin: string;
-  groups: IGroup[];
+  groups: IGroupDisplay[];
 
   status: IAssignmentStatus;
   infinite: boolean;
 
   start: Date;
   end: Date;
-}
-
-export interface IAssignmentListBundle {
-  assignments: IAssignmentDisplay[];
-  tags: ITag[];
-  groups: IGroup[];
 }
 
 export interface IAssignmentTimeInfo {

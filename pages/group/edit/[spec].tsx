@@ -5,7 +5,7 @@ import { UseFormReturnType } from '@mantine/form';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { getApiUrl } from '@utils/getServerUrl';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { IGroup } from '@custom-types/data/IGroup';
+import { IGroupDisplay } from '@custom-types/data/IGroup';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { IUserDisplay } from '@custom-types/data/IUser';
 import {
@@ -16,7 +16,10 @@ import Title from '@ui/Title/Title';
 import { useRequest } from '@hooks/useRequest';
 import { REVALIDATION_TIME } from '@constants/PageRevalidation';
 
-function EditGroup(props: { group: IGroup; members: string[] }) {
+function EditGroup(props: {
+  group: IGroupDisplay;
+  members: string[];
+}) {
   const { data: users } = useRequest<{}, IUserDisplay[]>(
     'user/list-display',
     'GET',
@@ -62,6 +65,7 @@ function EditGroup(props: { group: IGroup; members: string[] }) {
             spec: form.values.spec,
             name: form.values.name,
             readonly: form.values.readonly,
+            organization: '',
           },
           members: form.values.members,
         }

@@ -6,7 +6,7 @@ import { ILocale } from '@custom-types/ui/ILocale';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import { Check, Pencil, Plus, X } from 'tabler-icons-react';
 import { useUser } from '@hooks/useUser';
-import { IGroupDisplay } from '@custom-types/data/IGroup';
+import { IGroupDisplayList } from '@custom-types/data/IGroup';
 import { Icon } from '@ui/basics';
 import GroupList from '@ui/GroupList/GroupList';
 import DeleteModal from '@components/Group/DeleteModal/DeleteModal';
@@ -63,7 +63,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     size: 1,
   },
 ];
-const refactorGroup = (group: IGroupDisplay): any => ({
+const refactorGroup = (group: IGroupDisplayList): any => ({
   name: {
     value: group.name,
     display: (

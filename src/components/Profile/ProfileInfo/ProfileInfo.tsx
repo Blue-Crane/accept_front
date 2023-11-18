@@ -9,13 +9,18 @@ import ShortStatistics from './ShortStatistics/ShortStatistics';
 
 const ProfileInfo: FC<IFullProfileBundle> = ({
   user,
+  organizations,
   attempt_info,
   task_info,
   rating_info,
 }) => {
   return (
     <div className={styles.wrapper}>
-      <MainInfo user={user} place={rating_info.place} />
+      <MainInfo
+        user={user}
+        organizations={organizations}
+        place={rating_info.place}
+      />
       <GroupsInfo user={user} />
       <ShortStatistics
         ratingInfo={rating_info}

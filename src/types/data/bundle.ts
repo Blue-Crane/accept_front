@@ -4,7 +4,7 @@ import {
   ITaskCheckType,
   ITaskType,
 } from './atomic';
-import { IGroup } from './IGroup';
+import { IGroupDisplay } from './IGroup';
 import { ITag } from './ITag';
 import { ITaskBaseInfo, ITaskDisplay, ITaskEdit } from './ITask';
 import { IUser, IUserDisplay } from './IUser';
@@ -30,7 +30,7 @@ export interface ITaskEditBundle {
 export interface INotificationAddBundle {
   users: IUser[];
   roles: IRole[];
-  groups: IGroup[];
+  groups: IGroupDisplay[];
 }
 
 export interface ITasksUsersBundle {

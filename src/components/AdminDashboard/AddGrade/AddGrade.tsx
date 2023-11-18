@@ -1,5 +1,5 @@
 import { FC, memo, useCallback, useMemo } from 'react';
-import { IGroup } from '@custom-types/data/IGroup';
+import { IGroupAdd } from '@custom-types/data/IGroup';
 import { useLocale } from '@hooks/useLocale';
 import { UseFormReturnType } from '@mantine/form';
 import {
@@ -43,7 +43,7 @@ const AddGrade: FC<{}> = ({}) => {
         return;
       }
       requestWithNotify<
-        { group: IGroup; members: string[] },
+        { group: IGroupAdd; members: string[] },
         boolean
       >(
         'group/add',
@@ -56,6 +56,7 @@ const AddGrade: FC<{}> = ({}) => {
             spec: '',
             name: form.values.name,
             readonly: true,
+            organization: '',
           },
           members: form.values.members,
         }

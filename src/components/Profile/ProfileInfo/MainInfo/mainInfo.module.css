@@ -36,3 +36,11 @@
   bottom: -17px;
   right: -17px;
 }
+
+.organizations {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  max-width: 300px;
+  gap: var(--spacer-xs);
+}

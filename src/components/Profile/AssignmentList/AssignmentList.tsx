@@ -18,21 +18,17 @@ import {
   Plus,
   Run,
 } from 'tabler-icons-react';
-import { ITag } from '@custom-types/data/ITag';
 import { BaseSearch } from '@custom-types/data/request';
 import { useRequest } from '@hooks/useRequest';
 import { ILocale } from '@custom-types/ui/ILocale';
 import Fuse from 'fuse.js';
 import { hasSubarray } from '@utils/hasSubarray';
-import { MultiSelect } from '@ui/basics';
+import { Badge, MultiSelect } from '@ui/basics';
 import { customTableSort } from '@utils/customTableSort';
 import { getLocalDate } from '@utils/datetime';
-import {
-  IAssignmentDisplay,
-  IAssignmentListBundle,
-} from '@custom-types/data/IAssignment';
+import { IAssignmentDisplay } from '@custom-types/data/IAssignment';
 import styles from './assignmentList.module.css';
-import { IGroup } from '@custom-types/data/IGroup';
+import { IGroupDisplay } from '@custom-types/data/IGroup';
 import { colorGenerator } from '@utils/consistentColorGenerator';
 import SingularSticky from '@ui/Sticky/SingularSticky';
 import { useUser } from '@hooks/useUser';
@@ -208,86 +204,92 @@ const getAssignmentIcon = (
 };
 
 const processData = (
-  data: IAssignmentListBundle,
+  data: IAssignmentDisplay[],
   locale: ILocale
 ): {
   assignments: IAssignmentDisplayList[];
-  tags: ITag[];
-  groups: IGroup[];
+  groups: IGroupDisplay[];
 } => {
-  const assignments = data.assignments.map(
-    (assignment: IAssignmentDisplay): any => ({
-      ...assignment,
-      state: {
-        value: assignment.status.spec,
-        display: getAssignmentIcon(assignment, locale),
-      },
-      title: {
-        value: assignment.title,
-        display: (
-          <div className={tableStyles.titleWrapper}>
-            <Link
-              className={tableStyles.title}
-              href={`/edu/assignment/${assignment.spec}`}
-            >
-              {assignment.title}
-            </Link>
-            {assignment.tags.length > 0 && (
-              <span className={tableStyles.tags}>
-                {assignment.tags.map((tag, idx) => (
-                  <div className={tableStyles.tag} key={idx}>
-                    {tag.title +
-                      (idx == assignment.tags.length - 1 ? '' : ', ')}
-                  </div>
-                ))}
-              </span>
-            )}
-          </div>
-        ),
-      },
-      groups: {
-        value: assignment.groups,
-        display: (
-          <div className={tableStyles.groups}>
-            {assignment.groups.map((group, idx) => (
-              <div
-                className={styles.group}
-                key={idx}
-                style={{
-                  color: colorGenerator(group.spec),
-                }}
+  const groupsMap = new Map();
+
+  const assignments = data.map(
+    (assignment: IAssignmentDisplay): any => {
+      assignment.groups.map((group: IGroupDisplay) =>
+        groupsMap.set(group.spec, group)
+      );
+      return {
+        ...assignment,
+        state: {
+          value: assignment.status.spec,
+          display: getAssignmentIcon(assignment, locale),
+        },
+        title: {
+          value: assignment.title,
+          display: (
+            <div className={tableStyles.titleWrapper}>
+              <Link
+                className={tableStyles.title}
+                href={`/edu/assignment/${assignment.spec}`}
               >
-                {group.name}
-              </div>
-            ))}
-          </div>
-        ),
-      },
-      author: {
-        value: assignment.author,
-        display: assignment.author,
-      },
-      taskNumber: {
-        value: assignment.taskNumber,
-        display: assignment.taskNumber,
-      },
-      start: {
-        value: new Date(assignment.start),
-        display: <>{getLocalDate(assignment.start)}</>,
-      },
-      end: {
-        value: new Date(assignment.end),
-        display: assignment.infinite ? (
-          locale.assignment.form.infinite
-        ) : (
-          <>{getLocalDate(assignment.end)}</>
-        ),
-      },
-    })
+                {assignment.title}
+              </Link>
+              {assignment.tags.length > 0 && (
+                <span className={tableStyles.tags}>
+                  {assignment.tags.map((tag, idx) => (
+                    <div className={tableStyles.tag} key={idx}>
+                      {tag.title +
+                        (idx == assignment.tags.length - 1
+                          ? ''
+                          : ', ')}
+                    </div>
+                  ))}
+                </span>
+              )}
+            </div>
+          ),
+        },
+        groups: {
+          value: assignment.groups,
+          display: (
+            <div className={tableStyles.groups}>
+              {assignment.groups.map((group, idx) => (
+                <Badge
+                  key={idx}
+                  color={colorGenerator(group.spec)}
+                  size="sm"
+                  tooltipProps={{ label: group.organization.title }}
+                >
+                  {group.name}
+                </Badge>
+              ))}
+            </div>
+          ),
+        },
+        author: {
+          value: assignment.author,
+          display: assignment.author,
+        },
+        taskNumber: {
+          value: assignment.taskNumber,
+          display: assignment.taskNumber,
+        },
+        start: {
+          value: new Date(assignment.start),
+          display: <>{getLocalDate(assignment.start)}</>,
+        },
+        end: {
+          value: new Date(assignment.end),
+          display: assignment.infinite ? (
+            locale.assignment.form.infinite
+          ) : (
+            <>{getLocalDate(assignment.end)}</>
+          ),
+        },
+      };
+    }
   );
-  const tags = data.tags;
-  const groups = data.groups;
-  return { assignments, tags, groups };
+  const groups = Array.from(groupsMap.values()) as IGroupDisplay[];
+  return { assignments, groups };
 };
 
 const defaultOnPage = 10;
@@ -297,9 +299,7 @@ const AssignmentList: FC<{ url?: string }> = ({
 }) => {
   const { locale } = useLocale();
   const [list, setList] = useState<IAssignmentDisplayList[]>([]);
-  const [tags, setTags] = useState<ITag[]>([]);
-  const [groups, setGroups] = useState<IGroup[]>([]);
-  const [currentTags, setCurrentTags] = useState<string[]>([]);
+  const [groups, setGroups] = useState<IGroupDisplay[]>([]);
   const [currentGroups, setCurrentGroups] = useState<string[]>([]);
 
   const [total, setTotal] = useState(0);
@@ -323,15 +323,6 @@ const AssignmentList: FC<{ url?: string }> = ({
     [locale]
   );
 
-  const searchTags = useMemo(
-    () =>
-      tags.map((tag) => ({
-        label: tag.title,
-        value: tag.spec,
-      })),
-    [tags]
-  );
-
   const searchGroups = useMemo(
     () =>
       groups.map((group) => ({
@@ -343,11 +334,10 @@ const AssignmentList: FC<{ url?: string }> = ({
 
   const { data, loading } = useRequest<
     {},
-    IAssignmentListBundle,
+    IAssignmentDisplay[],
     {
       assignments: IAssignmentDisplayList[];
-      tags: ITag[];
-      groups: IGroup[];
+      groups: IGroupDisplay[];
     }
   >(url, 'GET', undefined, (data) => processData(data, locale));
 
@@ -366,27 +356,17 @@ const AssignmentList: FC<{ url?: string }> = ({
               .search(searchParams.search_params.search)
               .map((result) => result.item);
 
-      const tagged =
-        currentTags.length > 0
-          ? searched.filter((assignment) =>
-              hasSubarray(
-                assignment.tags.map((tag: ITag) => tag.spec),
-                currentTags
-              )
-            )
-          : searched;
-
       const grouped =
         currentGroups.length > 0
-          ? tagged.filter((assignment) =>
+          ? searched.filter((assignment) =>
               hasSubarray(
                 assignment.groups.value.map(
-                  (group: IGroup) => group.spec
+                  (group: IGroupDisplay) => group.spec
                 ),
                 currentGroups
               )
             )
-          : tagged;
+          : searched;
 
       const sorted = grouped.sort((a, b) =>
         customTableSort(a, b, searchParams.sort_by, columns)
@@ -402,13 +382,12 @@ const AssignmentList: FC<{ url?: string }> = ({
       );
       setList(paged);
     },
-    [columns, currentTags, currentGroups, searchParams]
+    [columns, currentGroups, searchParams]
   );
 
   useEffect(() => {
     if (data) {
       applyFilters(data.assignments);
-      setTags(data.tags);
       setGroups(data.groups);
     }
   }, [data, applyFilters]);
@@ -443,12 +422,6 @@ const AssignmentList: FC<{ url?: string }> = ({
           nothingFound={<>{locale.ui.table.nothingFoundMessage}</>}
           additionalSearch={
             <div className={styles.searchWrapper}>
-              <MultiSelect
-                searchable
-                data={searchTags}
-                onChange={setCurrentTags}
-                placeholder={locale.placeholders.selectTags}
-              />
               <MultiSelect
                 searchable
                 data={searchGroups}

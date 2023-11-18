@@ -2,7 +2,7 @@ import { useLocale } from '@hooks/useLocale';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { UseFormReturnType } from '@mantine/form';
 import { ReactNode, useCallback } from 'react';
-import { IGroup } from '@custom-types/data/IGroup';
+import { IGroupAdd } from '@custom-types/data/IGroup';
 import Form from '@components/Group/Form/Form';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import { IUserDisplay } from '@custom-types/data/IUser';
@@ -45,7 +45,7 @@ function AddGroup() {
         return;
       }
       requestWithNotify<
-        { group: IGroup; members: string[] },
+        { group: IGroupAdd; members: string[] },
         boolean
       >(
         'group/add',
@@ -58,6 +58,7 @@ function AddGroup() {
             spec: form.values.spec,
             name: form.values.name,
             readonly: form.values.readonly,
+            organization: '',
           },
           members: form.values.members,
         }

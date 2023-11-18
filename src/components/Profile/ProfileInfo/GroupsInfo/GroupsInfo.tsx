@@ -1,6 +1,6 @@
 import { IUser } from '@custom-types/data/IUser';
 import { useLocale } from '@hooks/useLocale';
-import { Badge } from '@mantine/core';
+import { Badge } from '@ui/basics';
 import { FC, memo } from 'react';
 import styles from './groupsInfo.module.css';
 
@@ -16,7 +16,13 @@ const GroupsInfo: FC<{ user: IUser }> = ({ user }) => {
           </div>
           <div className={styles.groupList}>
             {user.groups.map((group, index) => (
-              <Badge key={index} size="lg">
+              <Badge
+                key={index}
+                size="lg"
+                tooltipProps={{
+                  label: group.organization.title,
+                }}
+              >
                 {group.name}
               </Badge>
             ))}

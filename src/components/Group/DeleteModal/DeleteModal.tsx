@@ -3,13 +3,13 @@ import { FC, memo, useCallback, useState } from 'react';
 import { requestWithNotify } from '@utils/requestWithNotify';
 import SimpleModal from '@ui/SimpleModal/SimpleModal';
 import { Icon } from '@ui/basics';
-import { IGroupDisplay } from '@custom-types/data/IGroup';
+import { IGroupDisplayList } from '@custom-types/data/IGroup';
 import { Trash } from 'tabler-icons-react';
 import modalStyles from '@styles/ui/modal.module.css';
 import SimpleButtonGroup from '@ui/SimpleButtonGroup/SimpleButtonGroup';
 
 const DeleteModal: FC<{
-  group: IGroupDisplay;
+  group: IGroupDisplayList;
 }> = ({ group }) => {
   const { locale, lang } = useLocale();
 

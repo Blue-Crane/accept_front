@@ -1,6 +1,6 @@
 import { pureCallback } from '../ui/atomic';
 import { IRole } from './atomic';
-import { IGroup } from './IGroup';
+import { IGroupDisplay } from './IGroup';
 import { ITeamBaseInfo } from './ITeam';
 
 export interface Role {
@@ -16,7 +16,7 @@ export interface IUser {
   patronymic: string;
   email: string | undefined;
   shortName: string;
-  groups: IGroup[];
+  groups: IGroupDisplay[];
   role: Role;
 }
 
@@ -45,7 +45,7 @@ export interface IRegUser {
 
 export interface IUserListBundle {
   users: IUser[];
-  groups: IGroup[];
+  groups: IGroupDisplay[];
   roles: IRole[];
 }
 
@@ -57,12 +57,12 @@ export interface IUserDisplay {
 export interface IParticipant extends IUserDisplay {
   banned?: boolean;
   banReason?: string;
-  groups: IGroup[];
+  groups: IGroupDisplay[];
   team?: ITeamBaseInfo;
 }
 
 export interface IParticipantListBundle {
   users: IParticipant[];
-  groups: IGroup[];
+  groups: IGroupDisplay[];
   roles: IRole[];
 }

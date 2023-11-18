@@ -1,3 +1,4 @@
+import { IOrganizationDisplayWithRole } from './IOrganization';
 import { IUser } from './IUser';
 
 export interface IMinimalProfileBundle {
@@ -42,4 +43,5 @@ export interface IFullProfileBundle extends IMinimalProfileBundle {
   attempt_info: IAttemptInfo;
   task_info: ITaskInfo;
   rating_info: IRatingInfo;
+  organizations: IOrganizationDisplayWithRole[];
 }

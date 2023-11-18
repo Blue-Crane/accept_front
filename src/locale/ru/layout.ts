@@ -24,6 +24,6 @@ export const mainHeaderLinks = {
 };
 
 export const credentials = {
-  company: 'Blue Crane Inc.',
+  company: 'Paradise Crane Inc.',
   startYear: '2020',
 };

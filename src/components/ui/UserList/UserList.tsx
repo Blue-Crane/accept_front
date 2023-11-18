@@ -21,7 +21,7 @@ import {
   IParticipantListBundle,
   IUser,
 } from '@custom-types/data/IUser';
-import { IGroup } from '@custom-types/data/IGroup';
+import { IGroupDisplay } from '@custom-types/data/IGroup';
 import { IRole } from '@custom-types/data/atomic';
 import { capitalize } from '@utils/capitalize';
 import { MultiSelect } from '@ui/basics';
@@ -70,7 +70,7 @@ const UsersList: FC<{
     [initialColumns, locale]
   );
 
-  const [groups, setGroups] = useState<IGroup[]>([]);
+  const [groups, setGroups] = useState<IGroupDisplay[]>([]);
   const [currentGroups, setCurrentGroups] = useState<string[]>([]);
 
   const [roles, setRoles] = useState<IRole[]>([]);
@@ -84,7 +84,7 @@ const UsersList: FC<{
       response: IParticipantListBundle
     ): {
       users: IUserDisplayList[];
-      groups: IGroup[];
+      groups: IGroupDisplay[];
       roles: IRole[];
     } => ({
       users: response.users.map((user) => refactorUser(user)),
@@ -99,7 +99,7 @@ const UsersList: FC<{
     IParticipantListBundle,
     {
       users: IUserDisplayList[];
-      groups: IGroup[];
+      groups: IGroupDisplay[];
       roles: IRole[];
     }
   >(url, 'GET', undefined, processData);
@@ -152,7 +152,7 @@ const UsersList: FC<{
         currentGroups.length > 0
           ? searched.filter((user) =>
               hasSubarray(
-                user.groups.map((group: IGroup) => group.spec),
+                user.groups.map((group: IGroupDisplay) => group.spec),
                 currentGroups
               )
             )
