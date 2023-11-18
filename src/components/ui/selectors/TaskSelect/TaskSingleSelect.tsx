@@ -1,47 +1,41 @@
-import React, { FC, memo, useCallback, useMemo } from 'react';
+import React, { FC, memo } from 'react';
 import { Select } from '@ui/basics';
-import { TaskItemProps, TaskSelectProps } from './TaskSelect';
+import { TaskSelectProps } from './TaskSelect';
+import { useRequest } from '@hooks/useRequest';
+import { ITaskBaseInfo } from '@custom-types/data/ITask';
+import { SelectItem } from '@mantine/core';
 
 const TaskSingleSelect: FC<TaskSelectProps> = ({
+  url,
   label,
   placeholder,
-  tasks,
   nothingFound,
   select,
-  multiple, //eslint-disable-line
+  multiple: _multiplr,
   additionalProps,
 }) => {
-  const data = useMemo(
-    () =>
-      tasks.map(
+  const { data } = useRequest<{}, ITaskBaseInfo[], SelectItem[]>(
+    url,
+    'GET',
+    undefined,
+    (users) =>
+      users.map(
         (item) =>
           ({
             label: item.title,
             value: item.spec,
-          } as TaskItemProps)
+          } as SelectItem)
       ),
-    [tasks]
-  );
-
-  const onSelect = useCallback(
-    (spec: string | null) => {
-      if (!spec) {
-        select(undefined);
-        return;
-      }
-      const taskIndex = tasks.findIndex((item) => item.spec === spec);
-      if (taskIndex >= 0) {
-        select([tasks[taskIndex]]);
-      }
-    },
-    [select, tasks]
+    undefined,
+    undefined,
+    2_000
   );
 
   return (
     <>
       <Select
         searchable
-        data={data}
+        data={data || []}
         label={label}
         placeholder={placeholder}
         clearable
@@ -57,7 +51,7 @@ const TaskSingleSelect: FC<TaskSelectProps> = ({
         }
         {...additionalProps}
         onChange={(spec) => {
-          onSelect(spec);
+          select(spec ? [spec] : []);
           additionalProps?.onChange(spec);
         }}
       />

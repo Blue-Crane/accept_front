@@ -9,11 +9,7 @@ import { getLocalDate } from '@utils/datetime';
 import Link from 'next/link';
 import { useLocale } from '@hooks/useLocale';
 import { SegmentedControl } from '@ui/basics';
-import { useRequest } from '@hooks/useRequest';
-import { ITasksUsersBundle } from '@custom-types/data/bundle';
 import { TaskSelect, UserSelect } from '@ui/selectors';
-import { IUserDisplay } from '@custom-types/data/IUser';
-import { ITaskBaseInfo } from '@custom-types/data/ITask';
 import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
 
 const refactorAttempt = (
@@ -168,13 +164,6 @@ const AttemptList: FC<{
       refactorAttempt(attempt, type, spec),
     [type, spec]
   );
-
-  const { data } = useRequest<{}, ITasksUsersBundle>(
-    `${type}/bundle/tasks-users/${spec}`,
-    'GET',
-    undefined
-  );
-
   return (
     <div className={styles.wrapper}>
       {isFinished && (
@@ -197,29 +186,33 @@ const AttemptList: FC<{
       )}
       <div className={styles.selectors}>
         <UserSelect
+          url={
+            type == 'all' || type == 'current'
+              ? 'user/list-display'
+              : `${type}/bundle/users/${spec}`
+          }
           label={locale.dashboard.attemptsList.user.label}
           placeholder={locale.dashboard.attemptsList.user.placeholder}
           nothingFound={
             locale.dashboard.attemptsList.user.nothingFound
           }
-          users={data?.users || []}
-          select={(users: IUserDisplay[] | undefined) => {
-            if (users) setUserSearch(users.map((user) => user.login));
-            else setUserSearch([]);
-          }}
+          selectedUsers={userSearch}
+          select={setUserSearch}
           multiple
         />
         <TaskSelect
+          url={
+            type == 'all' || type == 'current'
+              ? 'task/list-base-info'
+              : `${type}/bundle/tasks/${spec}`
+          }
           label={locale.dashboard.attemptsList.task.label}
           placeholder={locale.dashboard.attemptsList.task.placeholder}
           nothingFound={
             locale.dashboard.attemptsList.task.nothingFound
           }
-          tasks={data?.tasks || []}
-          select={(tasks: ITaskBaseInfo[] | undefined) => {
-            if (tasks) setTaskSearch(tasks.map((task) => task.spec));
-            else setTaskSearch([]);
-          }}
+          selectedTasks={taskSearch}
+          select={setTaskSearch}
           multiple
         />
       </div>

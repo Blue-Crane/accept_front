@@ -1,5 +1,4 @@
 import React, { FC, memo } from 'react';
-import { ITaskBaseInfo } from '@custom-types/data/ITask';
 import TaskMultiSelect from './TaskMultiSelect';
 import TaskSingleSelect from './TaskSingleSelect';
 
@@ -12,11 +11,12 @@ export interface TaskItemProps
 }
 
 export interface TaskSelectProps {
+  url: string;
   label: string;
   placeholder: string;
   nothingFound: string;
-  tasks: ITaskBaseInfo[];
-  select: (_: ITaskBaseInfo[] | undefined) => void;
+  select: (_: string[]) => void;
+  selectedTasks: string[];
   additionalProps?: any;
   multiple?: boolean;
 }

@@ -1,25 +1,21 @@
-import React, {
-  FC,
-  forwardRef,
-  memo,
-  useCallback,
-  useMemo,
-} from 'react';
-import { Text } from '@mantine/core';
+import React, { FC, forwardRef, memo } from 'react';
+import { SelectItem, Text } from '@mantine/core';
 import { MultiSelect, UserAvatar } from '@ui/basics';
 import { Eye } from 'tabler-icons-react';
 import styles from './userSelect.module.css';
 import Link from 'next/link';
 import { UserItemProps, UserSelectProps } from './UserSelect';
 import { IUserDisplay } from '@custom-types/data/IUser';
+import { useRequest } from '@hooks/useRequest';
 
 const UserMultiSelect: FC<UserSelectProps> = ({
+  url,
   label,
   placeholder,
-  users,
+  selectedUsers,
   nothingFound,
   select,
-  multiple, //eslint-disable-line
+  multiple: _multiple,
   additionalProps,
 }) => {
   const SelectItem = forwardRef<HTMLDivElement, UserItemProps>(
@@ -53,42 +49,33 @@ const UserMultiSelect: FC<UserSelectProps> = ({
   );
   SelectItem.displayName = 'SelectItem';
 
-  const data = useMemo(
-    () =>
+  const { data } = useRequest<{}, IUserDisplay[], SelectItem[]>(
+    url,
+    'GET',
+    undefined,
+    (users) =>
       users.map(
         (item) =>
           ({
-            login: item.login,
             label: item.shortName,
             value: item.login,
-          } as UserItemProps)
+          } as SelectItem)
       ),
-    [users]
-  );
-
-  const onSelect = useCallback(
-    (logins: string[]) => {
-      if (logins.length == 0) {
-        select(undefined);
-        return;
-      }
-      const map = new Map(users.map((item) => [item.login, item]));
-
-      select(logins.map((item) => map.get(item) as IUserDisplay));
-    },
-    [select, users]
+    undefined,
+    undefined,
+    2_000
   );
 
   return (
     <>
       <MultiSelect
         searchable
-        data={data}
+        data={data || []}
         itemComponent={SelectItem}
         label={label}
         placeholder={placeholder}
-        clearable
         maxDropdownHeight={400}
+        clearable
         nothingFound={nothingFound}
         filter={(value, selected, item) =>
           item.label
@@ -100,7 +87,7 @@ const UserMultiSelect: FC<UserSelectProps> = ({
         }
         {...additionalProps}
         onChange={(logins) => {
-          onSelect(logins);
+          select(logins);
           additionalProps?.onChange(logins);
         }}
       />

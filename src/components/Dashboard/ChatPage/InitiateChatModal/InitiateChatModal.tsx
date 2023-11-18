@@ -93,8 +93,6 @@ const InitiateChatModal: FC<{
           <MemberSelector
             entity={entity}
             type={type}
-            opened={startChatModal}
-            exclude={exclude}
             form={form}
             field={'user'}
           />

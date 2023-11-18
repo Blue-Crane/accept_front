@@ -1,46 +1,41 @@
-import React, { FC, memo, useCallback, useMemo } from 'react';
+import React, { FC, memo } from 'react';
 import { MultiSelect } from '@ui/basics';
-import { TaskItemProps, TaskSelectProps } from './TaskSelect';
-import { ITaskDisplay } from '@custom-types/data/ITask';
+import { TaskSelectProps } from './TaskSelect';
+import { useRequest } from '@hooks/useRequest';
+import { SelectItem } from '@mantine/core';
+import { ITaskBaseInfo } from '@custom-types/data/ITask';
 
 const TaskMultiSelect: FC<TaskSelectProps> = ({
+  url,
   label,
   placeholder,
-  tasks,
   nothingFound,
   select,
-  multiple, //eslint-disable-line
+  multiple: _multiple,
   additionalProps,
 }) => {
-  const data = useMemo(
-    () =>
-      tasks.map(
+  const { data } = useRequest<{}, ITaskBaseInfo[], SelectItem[]>(
+    url,
+    'GET',
+    undefined,
+    (users) =>
+      users.map(
         (item) =>
           ({
             label: item.title,
             value: item.spec,
-          } as TaskItemProps)
+          } as SelectItem)
       ),
-    [tasks]
-  );
-
-  const onSelect = useCallback(
-    (specs: string[]) => {
-      if (specs.length == 0) {
-        select([]);
-        return;
-      }
-      const map = new Map(tasks.map((item) => [item.spec, item]));
-      select(specs.map((spec) => map.get(spec) as ITaskDisplay));
-    },
-    [select, tasks]
+    undefined,
+    undefined,
+    2_000
   );
 
   return (
     <>
       <MultiSelect
         searchable
-        data={data}
+        data={data || []}
         label={label}
         placeholder={placeholder}
         clearable
@@ -56,7 +51,7 @@ const TaskMultiSelect: FC<TaskSelectProps> = ({
         }
         {...additionalProps}
         onChange={(specs) => {
-          onSelect(specs);
+          select(specs);
           additionalProps?.onChange(specs);
         }}
       />

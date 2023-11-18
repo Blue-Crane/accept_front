@@ -1,5 +1,4 @@
 import React, { FC, memo } from 'react';
-import { IUserDisplay } from '@custom-types/data/IUser';
 import UserMultiSelect from './UserMultiSelect';
 import UserSingleSelect from './UserSingleSelect';
 
@@ -11,11 +10,12 @@ export interface UserItemProps
 }
 
 export interface UserSelectProps {
+  url: string;
   label: string;
   placeholder: string;
   nothingFound: string;
-  users: IUserDisplay[];
-  select: (_: IUserDisplay[] | undefined) => void;
+  selectedUsers: string[];
+  select: (_: string[]) => void;
   additionalProps?: any;
   multiple?: boolean;
 }

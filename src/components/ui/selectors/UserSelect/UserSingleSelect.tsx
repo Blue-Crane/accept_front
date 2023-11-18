@@ -1,24 +1,21 @@
-import React, {
-  FC,
-  forwardRef,
-  memo,
-  useCallback,
-  useMemo,
-} from 'react';
-import { Text } from '@mantine/core';
+import React, { FC, forwardRef, memo } from 'react';
+import { SelectItem, Text } from '@mantine/core';
 import { Select, UserAvatar } from '@ui/basics';
 import { Eye } from 'tabler-icons-react';
 import styles from './userSelect.module.css';
 import Link from 'next/link';
 import { UserItemProps, UserSelectProps } from './UserSelect';
+import { useRequest } from '@hooks/useRequest';
+import { IUserDisplay } from '@custom-types/data/IUser';
 
 const UserSingleSelect: FC<UserSelectProps> = ({
+  url,
   label,
   placeholder,
-  users,
+  selectedUsers,
   nothingFound,
   select,
-  multiple, //eslint-disable-line
+  multiple: _multiple,
   additionalProps,
 }) => {
   const SelectItem = forwardRef<HTMLDivElement, UserItemProps>(
@@ -52,40 +49,28 @@ const UserSingleSelect: FC<UserSelectProps> = ({
   );
   SelectItem.displayName = 'SelectItem';
 
-  const data = useMemo(
-    () =>
+  const { data } = useRequest<{}, IUserDisplay[], SelectItem[]>(
+    url,
+    'GET',
+    undefined,
+    (users) =>
       users.map(
         (item) =>
           ({
-            login: item.login,
             label: item.shortName,
             value: item.login,
-          } as UserItemProps)
+          } as SelectItem)
       ),
-    [users]
-  );
-
-  const onSelect = useCallback(
-    (login: string | null) => {
-      if (!login) {
-        select(undefined);
-        return;
-      }
-      const userIndex = users.findIndex(
-        (item) => item.login === login
-      );
-      if (userIndex >= 0) {
-        select([users[userIndex]]);
-      }
-    },
-    [select, users]
+    undefined,
+    undefined,
+    2_000
   );
 
   return (
     <>
       <Select
         searchable
-        data={data}
+        data={data || []}
         itemComponent={SelectItem}
         label={label}
         placeholder={placeholder}
@@ -102,7 +87,7 @@ const UserSingleSelect: FC<UserSelectProps> = ({
         }
         {...additionalProps}
         onChange={(login) => {
-          onSelect(login);
+          select(login ? [login] : []);
           additionalProps?.onChange(login);
         }}
       />

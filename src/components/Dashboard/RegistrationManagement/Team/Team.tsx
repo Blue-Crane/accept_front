@@ -123,14 +123,14 @@ const Team: FC<{
         inputProps={form.getInputProps('participants')}
       />
       <UserSelect
+        url={``}
         label={locale.team.page.capitan}
         placeholder={locale.dashboard.attemptsList.user.placeholder}
         nothingFound={locale.dashboard.attemptsList.user.nothingFound}
-        users={localUsers.filter((item) =>
-          form.values.participants.includes(item.login)
-        )}
-        select={(item) =>
-          item && form.setFieldValue('capitan', item[0].login)
+        selectedUsers={form.values.participants}
+        select={(logins) =>
+          logins.length > 0 &&
+          form.setFieldValue('capitan', logins[0])
         }
         additionalProps={form.getInputProps('capitan')}
       />
