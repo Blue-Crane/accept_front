@@ -52,7 +52,7 @@ const AdminDashboard: FC<{}> = ({}) => {
         title: locale.dashboard.admin.addGrades,
       },
       {
-        page: <ChangeGrades />,
+        page: <ChangeGrades organization={organization} />,
         icon: <AB2 color="var(--secondary)" />,
         title: locale.dashboard.admin.changeGrades,
       },

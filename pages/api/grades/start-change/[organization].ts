@@ -8,6 +8,6 @@ export default async function StartChangeStudentGrade(
   await fetchWrapper({
     req: req,
     res: res,
-    url: 'api/grades/start',
+    url: `api/grades/start/${req.query.organization}`,
   });
 }

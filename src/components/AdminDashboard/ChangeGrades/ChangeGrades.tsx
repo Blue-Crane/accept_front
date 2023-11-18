@@ -118,7 +118,9 @@ const ACCEPTED = [
   'application/vnd.ms-excel',
 ];
 
-const ChangeGrades: FC<{}> = ({}) => {
+const ChangeGrades: FC<{ organization: string }> = ({
+  organization,
+}) => {
   const { locale, lang } = useLocale();
   const [users, setUsers] = useState<IGradeChange[]>([]);
   const [errors, setErrors] = useState<IGradeChangeResponseTable[]>(
@@ -134,13 +136,15 @@ const ChangeGrades: FC<{}> = ({}) => {
     setTable('users');
   }, []);
 
-  const sendUsers = useCallback(async (users: IGradeChange[]) => {
-    return await sendRequest<IGradeChange[], IGradeChangeResponse[]>(
-      'grades/change',
-      'POST',
-      users
-    );
-  }, []);
+  const sendUsers = useCallback(
+    async (users: IGradeChange[]) => {
+      return await sendRequest<
+        IGradeChange[],
+        IGradeChangeResponse[]
+      >(`grades/change/${organization}`, 'POST', users);
+    },
+    [organization]
+  );
 
   const handleSend = useCallback(async () => {
     const id = newNotification({
@@ -148,7 +152,10 @@ const ChangeGrades: FC<{}> = ({}) => {
       autoClose: false,
     });
 
-    await sendRequest<{}, {}>('grades/start-change', 'GET');
+    await sendRequest<{}, {}>(
+      `grades/start-change/${organization}`,
+      'GET'
+    );
     for (let idx = 0; idx < users.length / USERS_AT_ONCE; idx++) {
       await sendUsers(
         users.slice(
@@ -162,7 +169,7 @@ const ChangeGrades: FC<{}> = ({}) => {
     let wrong_grades: IGradeChangeResponse[] = [];
 
     await sendRequest<{}, IGradeChangeResponse[]>(
-      'grades/end-change',
+      `grades/end-change/${organization}`,
       'GET'
     ).then((res) => {
       if (res.error) {
@@ -223,7 +230,7 @@ const ChangeGrades: FC<{}> = ({}) => {
       title: locale.grade.change.success,
       autoClose: 30000,
     });
-  }, [locale, users, sendUsers, lang]);
+  }, [locale, users, sendUsers, lang, organization]);
 
   return (
     <>
