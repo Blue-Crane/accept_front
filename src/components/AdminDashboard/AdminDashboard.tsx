@@ -32,7 +32,7 @@ const AdminDashboard: FC<{}> = ({}) => {
         hidePrefix: true,
       },
       {
-        page: <AddUsers />,
+        page: <AddUsers organization={organization} />,
         icon: <Users color="var(--secondary)" />,
         title: locale.dashboard.admin.addUsers,
       },
@@ -66,7 +66,7 @@ const AdminDashboard: FC<{}> = ({}) => {
       pagePrefix={
         <div className={styles.organizationSelectorWrapper}>
           <SingleOrganizationSelector
-            url="organization/admin"
+            url="organization/admin_dashboard/read"
             label={locale.ui.organizationSelector.singleTitle}
             organization={organization}
             setOrganization={setOrganization}

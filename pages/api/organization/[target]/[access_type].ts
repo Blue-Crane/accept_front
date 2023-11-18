@@ -8,6 +8,6 @@ export default async function OrganizationsAdmin(
   await fetchWrapper({
     req: req,
     res: res,
-    url: 'api/organization/admin',
+    url: `api/organization/${req.query.target}/${req.query.access_type}`,
   });
 }

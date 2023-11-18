@@ -31,7 +31,7 @@ const OrganizationsRoles: FC<{
       />
 
       <OrganizationSelector
-        url={'organization/admin'}
+        url={'organization/notification_add/write'}
         form={form}
         selectedOrganizations={organizations}
         setOrganizations={setOrganizations}

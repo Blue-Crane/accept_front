@@ -8,7 +8,7 @@ export default async function AddStudent(
   await fetchWrapper({
     req: req,
     res: res,
-    url: 'api/students',
+    url: `api/students/${req.query.organization}`,
     method: 'POST',
   });
 }

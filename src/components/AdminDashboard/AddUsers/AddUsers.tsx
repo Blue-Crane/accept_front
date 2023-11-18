@@ -154,7 +154,7 @@ const ACCEPTED = [
   'application/vnd.ms-excel',
 ];
 
-const AddUsers: FC<{}> = ({}) => {
+const AddUsers: FC<{ organization: string }> = ({ organization }) => {
   const { locale, lang } = useLocale();
   const [users, setUsers] = useState<IStudentAdd[]>([]);
   const [errors, setErrors] = useState<IStudentAddResponseTable[]>(
@@ -170,13 +170,16 @@ const AddUsers: FC<{}> = ({}) => {
     setTable('users');
   }, []);
 
-  const sendUsers = useCallback(async (users: IStudentAdd[]) => {
-    return await sendRequest<IStudentAdd[], IStudentAddResponse[]>(
-      'students/add',
-      'POST',
-      users
-    );
-  }, []);
+  const sendUsers = useCallback(
+    async (users: IStudentAdd[]) => {
+      return await sendRequest<IStudentAdd[], IStudentAddResponse[]>(
+        `students/add/${organization}`,
+        'POST',
+        users
+      );
+    },
+    [organization]
+  );
 
   const handleSend = useCallback(async () => {
     const id = newNotification({
@@ -185,7 +188,10 @@ const AddUsers: FC<{}> = ({}) => {
     });
 
     let errors: string[] = [];
-    await sendRequest<{}, {}>('students/start-add', 'GET');
+    await sendRequest<{}, {}>(
+      `students/start-add/${organization}`,
+      'GET'
+    );
     for (let idx = 0; idx < users.length / USERS_AT_ONCE; idx++) {
       const res = await sendUsers(
         users.slice(
@@ -208,7 +214,7 @@ const AddUsers: FC<{}> = ({}) => {
     let wrong_students: IStudentAddResponse[] = [];
 
     await sendRequest<{}, IStudentAddResponse[]>(
-      'students/end-add',
+      `students/end-add/${organization}`,
       'GET'
     ).then((res) => {
       if (res.error) {
@@ -295,8 +301,7 @@ const AddUsers: FC<{}> = ({}) => {
       title: locale.student.add.success,
       autoClose: 30000,
     });
-    // });
-  }, [locale, users, sendUsers, lang]);
+  }, [locale, users, sendUsers, lang, organization]);
 
   return (
     <>

@@ -1,13 +1,13 @@
 import { fetchWrapper } from '@utils/fetchWrapper';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function StartAddStudent(
+export default async function EndAddStudent(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   await fetchWrapper({
     req: req,
     res: res,
-    url: 'api/students/start',
+    url: `api/students/end/${req.query.organization}`,
   });
 }
