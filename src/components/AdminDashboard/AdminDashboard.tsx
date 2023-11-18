@@ -1,7 +1,7 @@
 import { IMenuLink } from '@custom-types/ui/IMenuLink';
 import { useLocale } from '@hooks/useLocale';
 import LeftMenu from '@ui/LeftMenu/LeftMenu';
-import { FC, memo, useMemo } from 'react';
+import { FC, memo, useMemo, useState } from 'react';
 import {
   AB2,
   AlphabetCyrillic,
@@ -16,9 +16,11 @@ import AddGrade from './AddGrade/AddGrade';
 import ChangeGrades from './ChangeGrades/ChangeGrades';
 import AddGrades from './AddGrades/AddGrades';
 import AssignmentList from '@components/Profile/AssignmentList/AssignmentList';
+import { SingleOrganizationSelector } from '@ui/selectors';
 
 const AdminDashboard: FC<{}> = ({}) => {
   const { locale } = useLocale();
+  const [organization, setOrganization] = useState<string>('');
 
   const links: IMenuLink[] = useMemo(
     () => [
@@ -26,6 +28,7 @@ const AdminDashboard: FC<{}> = ({}) => {
         page: <AssignmentList url="assignment/list" />,
         icon: <Chalkboard color="var(--secondary)" />,
         title: locale.dashboard.admin.assignmentList,
+        hidePrefix: true,
       },
       {
         page: <AddUsers />,
@@ -55,7 +58,20 @@ const AdminDashboard: FC<{}> = ({}) => {
     ],
     [locale]
   );
-  return <LeftMenu links={links} />;
+
+  return (
+    <LeftMenu
+      links={links}
+      pagePrefix={
+        <SingleOrganizationSelector
+          url="organization/admin"
+          label={locale.ui.organizationSelector.singleTitle}
+          organization={organization}
+          setOrganization={setOrganization}
+        />
+      }
+    />
+  );
 };
 
 export default memo(AdminDashboard);

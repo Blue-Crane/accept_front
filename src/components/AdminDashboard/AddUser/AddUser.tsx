@@ -3,9 +3,6 @@ import styles from './addUser.module.css';
 import { useForm } from '@mantine/form';
 import { Button, TextInput } from '@ui/basics';
 import { GroupSelector, SingleRoleSelector } from '@ui/selectors';
-import { IGroupDisplay } from '@custom-types/data/IGroup';
-import { IRole } from '@custom-types/data/atomic';
-import { useRequest } from '@hooks/useRequest';
 import { useLocale } from '@hooks/useLocale';
 import { requestWithNotify } from '@utils/requestWithNotify';
 
@@ -47,14 +44,6 @@ const AddUser: FC<{}> = ({}) => {
     validateInputOnBlur: true,
   });
   const { locale, lang } = useLocale();
-
-  const { data, loading } = useRequest<
-    {},
-    {
-      groups: IGroupDisplay[];
-      roles: IRole[];
-    }
-  >('user/addBundle', 'GET');
 
   const [groups, setGroups] = useState([] as string[]);
 
@@ -118,26 +107,24 @@ const AddUser: FC<{}> = ({}) => {
             {...form.getInputProps('patronymic')}
           />
         </div>
-        {!loading && (
-          <div className={styles.selectors}>
-            <div className={styles.roleSelector}>
-              <SingleRoleSelector
-                label={locale.auth.labels.role}
-                form={form}
-                field="role"
-              />
-            </div>
-            <div className={styles.groupWrapper}>
-              <GroupSelector
-                form={form}
-                selectedGroups={groups}
-                setGroups={setGroups}
-                width={'80%'}
-                field="groups"
-              />
-            </div>
+        <div className={styles.selectors}>
+          <div className={styles.roleSelector}>
+            <SingleRoleSelector
+              label={locale.auth.labels.role}
+              form={form}
+              field="role"
+            />
           </div>
-        )}
+          <div className={styles.groupWrapper}>
+            <GroupSelector
+              form={form}
+              selectedGroups={groups}
+              setGroups={setGroups}
+              width={'80%'}
+              field="groups"
+            />
+          </div>
+        </div>
       </div>
       <Button onClick={handleSubmit} disabled={hasErrors}>
         {locale.add}

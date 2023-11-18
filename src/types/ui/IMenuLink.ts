@@ -5,4 +5,5 @@ export interface IMenuLink {
   icon: ReactNode;
   title: string;
   section?: string;
+  hidePrefix?: boolean;
 }

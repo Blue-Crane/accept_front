@@ -44,6 +44,9 @@
   margin-top: var(--spacer-l);
   margin-right: var(--spacer-m);
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-l);
 }
 
 .groupWrapper svg {

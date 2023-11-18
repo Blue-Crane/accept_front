@@ -7,7 +7,8 @@ const LeftMenu: FC<{
   links: IMenuLink[];
   initialStep?: number;
   topContent?: ReactNode;
-}> = ({ links, initialStep, topContent }) => {
+  pagePrefix?: ReactNode;
+}> = ({ links, initialStep, topContent, pagePrefix }) => {
   const [current, setCurrent] = useState(initialStep || 0);
 
   return (
@@ -44,6 +45,7 @@ const LeftMenu: FC<{
         </Navbar.Section>
       </Navbar>
       <div className={styles.pageWrapper}>
+        {!!pagePrefix && !!!links[current].hidePrefix && pagePrefix}
         {links[current]?.page || links[0]?.page || ''}
       </div>
     </div>

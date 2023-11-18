@@ -19,7 +19,7 @@ export function useRequest<Body, ReqAnswer, Answer = ReqAnswer>(
   method?: availableMethods,
   body?: Body extends object ? Body : object,
   processData?: callback<ReqAnswer, Answer>,
-  onSuccess?: callback<any>,
+  onSuccess?: callback<IResponse<ReqAnswer>>,
   onError?: callback<any>,
   revalidate?: number
 ): IRequestData<Answer, ReqAnswer> {

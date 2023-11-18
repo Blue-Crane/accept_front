@@ -4,13 +4,14 @@ import { capitalize } from '@utils/capitalize';
 import { useRequest } from '@hooks/useRequest';
 import { SelectItem } from '@mantine/core';
 import { IOrganizationDisplay } from '@custom-types/data/IOrganization';
+import { setter } from '@custom-types/ui/atomic';
 
 const SingleOrganizationSelector: FC<{
   url: string;
   label: string;
-  form: any;
-  field: string;
-}> = ({ url, label, form, field }) => {
+  organization: string;
+  setOrganization: setter<string>;
+}> = ({ url, label, organization, setOrganization }) => {
   const { data, loading } = useRequest<
     {},
     IOrganizationDisplay[],
@@ -27,7 +28,11 @@ const SingleOrganizationSelector: FC<{
             value: item.spec,
           } as SelectItem)
       ),
-    undefined,
+    (res) => {
+      if (organization == '') {
+        setOrganization(res.response[0].spec);
+      }
+    },
     undefined,
     10_000
   );
@@ -36,8 +41,10 @@ const SingleOrganizationSelector: FC<{
     <div style={{ width: '100%' }}>
       <Select
         label={label}
-        data={data}
-        {...form.getInputProps(field)}
+        data={data || []}
+        disabled={data?.length == 1}
+        value={organization}
+        onChange={setOrganization}
       />
     </div>
   );
