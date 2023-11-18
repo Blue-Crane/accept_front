@@ -2,7 +2,6 @@ import { ITableColumn } from '@custom-types/ui/ITable';
 import { ITaskDisplay } from '@custom-types/data/ITask';
 import { DefaultLayout } from '@layouts/DefaultLayout';
 import { ReactNode } from 'react';
-import tableStyles from '@styles/ui/customTable.module.css';
 import { ILocale } from '@custom-types/ui/ILocale';
 import TaskList from '@ui/TaskList/TaskList';
 import SingularSticky from '@ui/Sticky/SingularSticky';
@@ -12,6 +11,8 @@ import Title from '@ui/Title/Title';
 import { useLocale } from '@hooks/useLocale';
 import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
 import Link from 'next/link';
+import tableStyles from '@styles/ui/customTable.module.css';
+import { Tip } from '@ui/basics';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -29,6 +30,22 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     hidable: false,
     hidden: false,
     size: 9,
+  },
+  {
+    label: locale.task.list.organization,
+    key: 'organization',
+    sortable: true,
+    sortFunction: (a: any, b: any) =>
+      a.title.value > b.title.value
+        ? 1
+        : a.title.value == b.title.value
+        ? 0
+        : -1,
+    sorted: 0,
+    allowMiddleState: true,
+    hidable: false,
+    hidden: false,
+    size: 3,
   },
   {
     label: locale.task.list.author,
@@ -129,6 +146,36 @@ const refactorTask = (task: ITaskDisplay): any => ({
           </span>
         )}
       </div>
+    ),
+  },
+  organization: {
+    value: task.organization.spec,
+    display: (
+      <Link
+        href={`/organization/${task.organization.spec}`}
+        className={tableStyles.title}
+      >
+        <Tip label={task.organization.title} position="top-start">
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 'var(--spacer-xxs)',
+            }}
+          >
+            {!!task.organization.logo && (
+              <img
+                width="30px"
+                height="30px"
+                src={task.organization.logo}
+                alt={''}
+              />
+            )}
+            <span>{task.organization.spec}</span>
+          </div>
+        </Tip>
+      </Link>
     ),
   },
 });
