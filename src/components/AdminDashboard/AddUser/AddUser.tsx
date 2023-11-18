@@ -6,7 +6,7 @@ import { GroupSelector, SingleRoleSelector } from '@ui/selectors';
 import { useLocale } from '@hooks/useLocale';
 import { requestWithNotify } from '@utils/requestWithNotify';
 
-const AddUser: FC<{}> = ({}) => {
+const AddUser: FC<{ organization: string }> = ({ organization }) => {
   const form = useForm({
     initialValues: {
       login: '',
@@ -55,15 +55,16 @@ const AddUser: FC<{}> = ({}) => {
       ...form.values,
       role: +form.values.role,
     };
+    console.log(organization);
     requestWithNotify<any, undefined>(
-      'user/add',
+      `user/one/${organization}`,
       'POST',
       locale.notify.user.add,
       lang,
       (_) => '',
       user
     );
-  }, [form, locale, lang]);
+  }, [form, locale, lang, organization]);
 
   const [hasErrors, setHasErrors] = useState(false);
 
@@ -110,6 +111,7 @@ const AddUser: FC<{}> = ({}) => {
         <div className={styles.selectors}>
           <div className={styles.roleSelector}>
             <SingleRoleSelector
+              url={`role/${organization}`}
               label={locale.auth.labels.role}
               form={form}
               field="role"
@@ -117,6 +119,7 @@ const AddUser: FC<{}> = ({}) => {
           </div>
           <div className={styles.groupWrapper}>
             <GroupSelector
+              url={`group/list/${organization}`}
               form={form}
               selectedGroups={groups}
               setGroups={setGroups}

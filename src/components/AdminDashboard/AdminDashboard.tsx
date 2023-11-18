@@ -36,7 +36,7 @@ const AdminDashboard: FC<{}> = ({}) => {
         title: locale.dashboard.admin.addUsers,
       },
       {
-        page: <AddUser />,
+        page: <AddUser organization={organization} />,
         icon: <UserPlus color="var(--secondary)" />,
         title: locale.dashboard.admin.addUser,
       },
@@ -56,7 +56,7 @@ const AdminDashboard: FC<{}> = ({}) => {
         title: locale.dashboard.admin.changeGrades,
       },
     ],
-    [locale]
+    [locale, organization]
   );
 
   return (

@@ -17,9 +17,18 @@ const GroupSelector: FC<{
   selectedGroups: string[];
   setGroups: setter<string[]>;
   field: string;
+  url?: string;
   shrink?: boolean;
   width?: string;
-}> = ({ form, selectedGroups, setGroups, field, shrink, width }) => {
+}> = ({
+  url = 'group/list',
+  form,
+  selectedGroups,
+  setGroups,
+  field,
+  shrink,
+  width,
+}) => {
   const { locale } = useLocale();
 
   const [data, setData] = useState([
@@ -28,7 +37,7 @@ const GroupSelector: FC<{
   ] as ICustomTransferListData);
 
   const { data: allGroups } = useRequest<{}, IGroupDisplay[]>(
-    'group/list',
+    url,
     'GET',
     undefined,
     undefined,

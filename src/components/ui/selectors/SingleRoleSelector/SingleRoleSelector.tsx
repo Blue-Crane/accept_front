@@ -6,12 +6,13 @@ import { useRequest } from '@hooks/useRequest';
 import { SelectItem } from '@mantine/core';
 
 const SingleRoleSelector: FC<{
+  url?: string;
   label: string;
   form: any;
   field: string;
-}> = ({ label, form, field }) => {
+}> = ({ url = 'role', label, form, field }) => {
   const { data, loading } = useRequest<{}, IRole[], SelectItem[]>(
-    'role',
+    url,
     'GET',
     undefined,
     (roles) =>
@@ -31,7 +32,7 @@ const SingleRoleSelector: FC<{
     <div style={{ width: '100%' }}>
       <Select
         label={label}
-        data={data}
+        data={data || []}
         {...form.getInputProps(field)}
       />
     </div>

@@ -62,7 +62,7 @@ export function useRequest<Body, ReqAnswer, Answer = ReqAnswer>(
 
   useEffect(() => {
     refetch(true);
-  }, []); //eslint-disable-line
+  }, [url]); //eslint-disable-line
 
   return { data, loading, error, detail, refetch };
 }
