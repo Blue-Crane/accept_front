@@ -4,7 +4,9 @@ import { validation } from './validation';
 export const form = {
   steps,
   validation,
+
   title: 'Title',
+  organization: 'Organization',
   complexity: 'Complexity (%)',
   description: 'Description',
   inputFormat: 'Input description',

@@ -6,6 +6,7 @@ export const form = {
   validation,
 
   title: 'Название',
+  organization: 'Организация',
   complexity: 'Сложность (%)',
   description: 'Описание',
   inputFormat: 'Входные данные',

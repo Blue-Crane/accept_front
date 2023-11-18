@@ -7,6 +7,7 @@ import {
   ITaskType,
   IVerdict,
 } from './atomic';
+import { IOrganizationDisplay } from './IOrganization';
 import { ITag } from './ITag';
 
 export interface IHint {
@@ -28,7 +29,7 @@ interface IConstraints {
   memory: number;
 }
 
-export interface Example {
+export interface IExample {
   inputData: string;
   outputData: string;
 }
@@ -53,6 +54,7 @@ export interface ITaskDisplay {
   insertedDate: Date;
   complexity: number;
   status?: IAttemptStatus;
+  organization: IOrganizationDisplay;
 }
 
 export interface ITaskDisplayWithPublic extends ITaskDisplay {
@@ -63,7 +65,7 @@ export interface ITask extends ITaskDisplay {
   description: string;
   constraints: IConstraints;
 
-  examples: Example[];
+  examples: IExample[];
   inputFormat: string;
   outputFormat: string;
   remark: string | undefined;
@@ -81,4 +83,25 @@ export interface ITaskEdit extends ITask {
   tests: ITaskTestData[];
   checker: IChecker | undefined;
   checkType: ITaskCheckType | undefined;
+}
+
+export interface ITaskAdd {
+  spec: string;
+  title: string;
+  description: string;
+  examples: IExample[];
+  author: string;
+  inputFormat: string;
+  outputFormat: string;
+  remark?: string;
+  hint?: IHint;
+  tags: string[];
+  complexity: number;
+  constraints?: IConstraints;
+  checkType: number;
+  taskType: number;
+  checker?: IChecker;
+  allowedLanguages: number[];
+  forbiddenLanguages: number[];
+  organization: string;
 }

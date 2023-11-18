@@ -1,5 +1,5 @@
 import { ITaskDisplay } from '@custom-types/data/ITask';
-import { IAssignmentSchemaDisplay } from '@custom-types/data/IAssignmentSchema';
+import { IAssignmentSchemaBaseInfo } from '@custom-types/data/IAssignmentSchema';
 import { useLocale } from '@hooks/useLocale';
 import { sendRequest } from '@requests/request';
 import Link from 'next/link';
@@ -24,8 +24,8 @@ const DeleteModal: FC<{
   setActive: callback<boolean, void>;
   task: ITaskDisplay;
 }> = ({ active, setActive, task }) => {
-  const [assignment_schemas, setAssignment_schemas] = useState<
-    IAssignmentSchemaDisplay[]
+  const [assignmentSchemas, setAssignmentSchemas] = useState<
+    IAssignmentSchemaBaseInfo[]
   >([]);
   const { locale, lang } = useLocale();
 
@@ -34,14 +34,14 @@ const DeleteModal: FC<{
   useEffect(() => {
     let cleanUp = false;
 
-    sendRequest<{}, IAssignmentSchemaDisplay[]>(
+    sendRequest<{}, IAssignmentSchemaBaseInfo[]>(
       `/task/connected_assignments/${task.spec}`,
       'POST',
       undefined,
       60000
     ).then((res) => {
       if (!res.error && !cleanUp) {
-        setAssignment_schemas(res.response);
+        setAssignmentSchemas(res.response);
       }
     });
 
@@ -78,27 +78,25 @@ const DeleteModal: FC<{
           <div>
             {locale.task.modals.delete + ` '${task.title}' ?`}
           </div>
-          {assignment_schemas.length > 0 && (
+          {assignmentSchemas.length > 0 && (
             <div>
               <div>
                 {locale.task.modals.usedInAssignments +
-                  ` (${assignment_schemas.length}):`}
+                  ` (${assignmentSchemas.length}):`}
               </div>
               <br />
               <div className={deleteModalStyles.list}>
-                {assignment_schemas.map(
-                  (assignment_schema, index) => (
-                    <Fragment key={index}>
-                      <Link
-                        href={`/edu/assignment_schema/${assignment_schema.spec}`}
-                        className={deleteModalStyles.link}
-                        target="_blank"
-                      >
-                        {assignment_schema.title}
-                      </Link>
-                    </Fragment>
-                  )
-                )}
+                {assignmentSchemas.map((assignment_schema, index) => (
+                  <Fragment key={index}>
+                    <Link
+                      href={`/edu/assignment_schema/${assignment_schema.spec}`}
+                      className={deleteModalStyles.link}
+                      target="_blank"
+                    >
+                      {assignment_schema.title}
+                    </Link>
+                  </Fragment>
+                ))}
               </div>
             </div>
           )}

@@ -11,7 +11,8 @@ const SingleOrganizationSelector: FC<{
   label: string;
   organization: string;
   setOrganization: setter<string>;
-}> = ({ url, label, organization, setOrganization }) => {
+  disabled?: boolean;
+}> = ({ url, label, organization, setOrganization, disabled }) => {
   const { data, loading } = useRequest<
     {},
     IOrganizationDisplay[],
@@ -42,7 +43,7 @@ const SingleOrganizationSelector: FC<{
       <Select
         label={label}
         data={data || []}
-        disabled={data?.length == 1}
+        disabled={disabled || data?.length == 1}
         value={organization}
         onChange={setOrganization}
       />

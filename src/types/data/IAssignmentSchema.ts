@@ -18,6 +18,11 @@ export interface IAssignmentSchemaDisplay {
   tags: ITag[];
 }
 
+export interface IAssignmentSchemaBaseInfo {
+  spec: string;
+  title: string;
+}
+
 export interface IAssignmentSchemaListBundle {
   assignment_schemas: IAssignmentSchemaDisplay[];
   tags: ITag[];

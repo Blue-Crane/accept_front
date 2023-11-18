@@ -46,6 +46,7 @@ const Form: FC<{
   taskTypes: ITaskType[];
   taskCheckTypes: ITaskCheckType[];
   hintAlarmTypes: IHintAlarmType[];
+  blurOrganization?: boolean;
 }> = ({
   handleSubmit,
   buttonLabel,
@@ -53,6 +54,7 @@ const Form: FC<{
   taskCheckTypes,
   hintAlarmTypes,
   initialValues,
+  blurOrganization,
 }) => {
   const { locale } = useLocale();
 
@@ -134,6 +136,7 @@ const Form: FC<{
           form={form}
           taskTypes={taskTypes}
           taskCheckTypes={taskCheckTypes}
+          blurOrganization={blurOrganization}
         />,
         form.values.taskType == 0 ? (
           <ConstraintsInfo key="1" form={form} />

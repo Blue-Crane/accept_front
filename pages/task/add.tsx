@@ -26,9 +26,11 @@ import {
 } from '@utils/notificationFunctions';
 import Title from '@ui/Title/Title';
 import { useRouter } from 'next/router';
+import { ITaskAdd } from '@custom-types/data/ITask';
 
 const initialValues = {
   spec: '',
+  organization: '',
   title: '',
   tags: [],
   author: '',
@@ -128,7 +130,6 @@ function AddTask() {
           (lang: Item) => lang.value
         ),
         tags: tags.map((tag: Item) => tag.value),
-        hidden: !!tournament,
       };
       if (!form.values.shouldRestrictLanguages) {
         body.allowedLanguages = [];
@@ -150,7 +151,7 @@ function AddTask() {
           alarm: hintAlarm,
         };
       }
-      requestWithNotify(
+      requestWithNotify<ITaskAdd, string>(
         !tournament ? 'task/add' : `tournament/task/${tournament}`,
         'POST',
         locale.notify.task.create,

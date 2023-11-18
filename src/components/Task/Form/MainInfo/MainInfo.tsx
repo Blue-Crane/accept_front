@@ -1,6 +1,9 @@
 import { useLocale } from '@hooks/useLocale';
 import { FC, memo, useCallback, useMemo } from 'react';
-import { TagSelector } from '@ui/selectors';
+import {
+  SingleOrganizationSelector,
+  TagSelector,
+} from '@ui/selectors';
 import styles from './mainInfo.module.css';
 import { ITaskCheckType, ITaskType } from '@custom-types/data/atomic';
 import { NumberInput, Radio, Switch, TextInput } from '@ui/basics';
@@ -10,7 +13,8 @@ const MainInfo: FC<{
   form: any;
   taskTypes: ITaskType[];
   taskCheckTypes: ITaskCheckType[];
-}> = ({ form, taskTypes, taskCheckTypes }) => {
+  blurOrganization?: boolean;
+}> = ({ form, taskTypes, taskCheckTypes, blurOrganization }) => {
   const { locale } = useLocale();
   const initialTags = useMemo(
     () => {
@@ -53,6 +57,15 @@ const MainInfo: FC<{
 
   return (
     <>
+      <SingleOrganizationSelector
+        url={`organization/task_add/write`}
+        disabled={!!blurOrganization}
+        label={locale.task.form.organization}
+        organization={form.values.organization}
+        setOrganization={(new_organization) =>
+          form.setFieldValue('organization', new_organization)
+        }
+      />
       <TextInput
         label={locale.task.form.title}
         required

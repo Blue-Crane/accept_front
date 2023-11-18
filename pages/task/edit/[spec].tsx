@@ -66,6 +66,7 @@ function EditTask(props: {
       })),
 
       remark: task.remark || '',
+      organization: task.organization.spec,
     }),
     [task] //eslint-disable-line
   );
@@ -151,6 +152,7 @@ function EditTask(props: {
         taskTypes={taskTypes}
         taskCheckTypes={taskCheckTypes}
         hintAlarmTypes={hintAlarmTypes}
+        blurOrganization
       />
     </>
   );
