@@ -17,6 +17,7 @@ import ChangeGrades from './ChangeGrades/ChangeGrades';
 import AddGrades from './AddGrades/AddGrades';
 import AssignmentList from '@components/Profile/AssignmentList/AssignmentList';
 import { SingleOrganizationSelector } from '@ui/selectors';
+import styles from './adminDashboard.module.css';
 
 const AdminDashboard: FC<{}> = ({}) => {
   const { locale } = useLocale();
@@ -41,12 +42,12 @@ const AdminDashboard: FC<{}> = ({}) => {
         title: locale.dashboard.admin.addUser,
       },
       {
-        page: <AddGrade />,
+        page: <AddGrade organization={organization} />,
         icon: <AlphabetCyrillic color="var(--secondary)" />,
         title: locale.dashboard.admin.addGrade,
       },
       {
-        page: <AddGrades />,
+        page: <AddGrades organization={organization} />,
         icon: <PlaylistAdd color="var(--secondary)" />,
         title: locale.dashboard.admin.addGrades,
       },
@@ -63,12 +64,14 @@ const AdminDashboard: FC<{}> = ({}) => {
     <LeftMenu
       links={links}
       pagePrefix={
-        <SingleOrganizationSelector
-          url="organization/admin"
-          label={locale.ui.organizationSelector.singleTitle}
-          organization={organization}
-          setOrganization={setOrganization}
-        />
+        <div className={styles.organizationSelectorWrapper}>
+          <SingleOrganizationSelector
+            url="organization/admin"
+            label={locale.ui.organizationSelector.singleTitle}
+            organization={organization}
+            setOrganization={setOrganization}
+          />
+        </div>
       }
     />
   );

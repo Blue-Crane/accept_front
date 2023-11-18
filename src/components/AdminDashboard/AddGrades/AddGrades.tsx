@@ -9,7 +9,9 @@ import styles from './addGrades.module.css';
 const allowedLetters = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З'];
 const initialLetters = allowedLetters.slice(0, 5);
 
-const AddGrades: FC<{}> = ({}) => {
+const AddGrades: FC<{ organization: string }> = ({
+  organization,
+}) => {
   const { locale, lang } = useLocale();
 
   const [grades, setGrades] = useState<
@@ -80,7 +82,7 @@ const AddGrades: FC<{}> = ({}) => {
                 spec: '',
                 name: `${grade.number} ${letter}`,
                 readonly: true,
-                organization: '',
+                organization: organization,
               },
               members: [],
             }

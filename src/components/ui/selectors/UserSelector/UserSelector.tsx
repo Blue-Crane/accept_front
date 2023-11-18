@@ -23,7 +23,9 @@ const UserSelector: FC<{
   width?: string;
   height?: string;
   inputProps?: any;
+  url?: string;
 }> = ({
+  url = 'user/list-display',
   selectedUsers,
   setUsers,
   shrink,
@@ -43,7 +45,7 @@ const UserSelector: FC<{
   ] as ICustomTransferListData);
 
   const { data: allUsers } = useRequest<{}, IUserDisplay[]>(
-    'user/list-display',
+    url,
     'GET',
     undefined,
     undefined,

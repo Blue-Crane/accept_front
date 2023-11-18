@@ -19,7 +19,7 @@ const initialValues = {
   members: [] as string[],
 };
 
-const AddGrade: FC<{}> = ({}) => {
+const AddGrade: FC<{ organization: string }> = ({ organization }) => {
   const { locale, lang } = useLocale();
 
   const { data } = useRequest<{}, IUserDisplay[]>(
@@ -56,13 +56,13 @@ const AddGrade: FC<{}> = ({}) => {
             spec: '',
             name: form.values.name,
             readonly: true,
-            organization: '',
+            organization: organization,
           },
           members: form.values.members,
         }
       );
     },
-    [locale, lang]
+    [locale, lang, organization]
   );
 
   return (
@@ -72,7 +72,9 @@ const AddGrade: FC<{}> = ({}) => {
         initialValues={initialValues}
         buttonText={locale.create}
         users={users || []}
+        organization={organization}
         hideReadonly
+        noDefault
       />
     </div>
   );

@@ -15,13 +15,17 @@ const Form: FC<{
   users: IUserDisplay[];
   handleSubmit: callback<UseFormReturnType<any>>;
   hideReadonly?: boolean;
+  noDefault?: boolean;
   initialValues: any;
+  organization: string;
 }> = ({
   initialValues,
   handleSubmit,
   buttonText,
   users,
   hideReadonly,
+  organization,
+  noDefault,
 }) => {
   const { locale } = useLocale();
   const { isAdmin } = useUser();
@@ -54,7 +58,9 @@ const Form: FC<{
   }, []); // eslint-disable-line
 
   return (
-    <div className={stepperStyles.wrapper}>
+    <div
+      className={noDefault ? styles.wrapper : stepperStyles.wrapper}
+    >
       <TextInput
         label={locale.group.name}
         required
@@ -72,6 +78,7 @@ const Form: FC<{
         </div>
       )}
       <UserSelector
+        url={`user/list-display/${organization}`}
         setUsers={setFieldValue}
         inputProps={initialProps}
         selectedUsers={form.values.members}

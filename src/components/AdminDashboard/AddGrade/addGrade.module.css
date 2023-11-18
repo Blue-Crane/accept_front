@@ -4,3 +4,7 @@
   justify-content: center;
   margin-top: var(--spacer-l);
 }
+
+.wrapper {
+  width: 80%;
+}

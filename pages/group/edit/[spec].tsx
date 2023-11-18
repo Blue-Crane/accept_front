@@ -82,6 +82,7 @@ function EditGroup(props: {
         initialValues={formValues}
         buttonText={locale.edit}
         users={users || []}
+        organization=""
       />
     </div>
   );

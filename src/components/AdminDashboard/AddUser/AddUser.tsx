@@ -123,7 +123,6 @@ const AddUser: FC<{ organization: string }> = ({ organization }) => {
               form={form}
               selectedGroups={groups}
               setGroups={setGroups}
-              width={'80%'}
               field="groups"
             />
           </div>

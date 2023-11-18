@@ -75,6 +75,7 @@ function AddGroup() {
         buttonText={locale.create}
         initialValues={initialValues}
         users={users || []}
+        organization=""
       />
     </>
   );

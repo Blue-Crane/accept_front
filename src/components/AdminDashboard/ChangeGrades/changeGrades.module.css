@@ -2,11 +2,13 @@
   display: flex;
   gap: var(--spacer-xxs);
 }
+
 .tableWrapper {
   display: flex;
   flex-direction: column;
   gap: var(--spacer-l);
 }
+
 .segmentControl {
   display: flex;
   flex-direction: row;

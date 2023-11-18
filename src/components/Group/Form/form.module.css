@@ -11,3 +11,9 @@
   gap: var(--spacer-xs);
   align-items: center;
 }
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-s);
+}
