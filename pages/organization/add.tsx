@@ -59,9 +59,9 @@ function AddOrganization() {
     <>
       <Title title={locale.titles.organization.add} />
       <Form
-        noDefault
         handleSubmit={handleSubmit}
         initialValues={initialValues}
+        buttonLabel={locale.create}
       />
     </>
   );

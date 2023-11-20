@@ -1,18 +1,14 @@
 import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { FileInput, FileInputProps } from '@mantine/core';
+import { InputWrapper } from '@ui/basics';
 import {
   errorNotification,
   newNotification,
   successNotification,
 } from '@utils/notificationFunctions';
 import { DEFAULT_AUTO_CLOSE } from '@utils/requestWithNotify';
-import {
-  FC,
-  memo,
-  useCallback,
-  useState,
-} from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 
 interface ImageUploaderProps extends FileInputProps {
   setUrl: setter<string>;
@@ -20,6 +16,8 @@ interface ImageUploaderProps extends FileInputProps {
 
 const ImageUploader: FC<ImageUploaderProps> = ({
   setUrl,
+  defaultValue,
+  label,
   ...props
 }) => {
   const [image, setImage] = useState<File | null>(null);
@@ -75,12 +73,16 @@ const ImageUploader: FC<ImageUploaderProps> = ({
   }, []);
 
   return (
-    <FileInput
-      accept="image/png,image/jpeg,image/svg"
-      value={image}
-      onChange={uploadImage}
-      {...props}
-    />
+    // @ts-expect-error
+    <InputWrapper label={label} {...props}>
+      <FileInput
+        accept="image/png,image/jpeg,image/svg"
+        value={image}
+        onChange={uploadImage}
+        defaultValue={defaultValue}
+        {...props}
+      />
+    </InputWrapper>
   );
 };
 
