@@ -11,7 +11,7 @@ import { InputWrapper } from '@ui/basics';
 
 const editorConfiguration = {
   simpleUpload: {
-    uploadUrl: `/api/image`,
+    uploadUrl: '/api/image',
 
     withCredentials: false,
   },

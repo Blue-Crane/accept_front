@@ -17,6 +17,7 @@ import { test_group } from './test_group';
 import { team } from './team';
 import { analytics } from './analytics';
 import { organization } from './organization';
+import { image } from './image';
 
 export const notify = {
   errors: {
@@ -41,4 +42,5 @@ export const notify = {
   team,
   analytics,
   organization,
+  image,
 };

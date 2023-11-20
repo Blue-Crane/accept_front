@@ -34,13 +34,12 @@ function AddOrganization() {
         });
         return;
       }
-      requestWithNotify<IOrganizationAdd, string>(
+      requestWithNotify<IOrganizationAdd, boolean>(
         'organization/add',
         'POST',
-        locale.notify.group.create,
+        locale.notify.organization.create,
         lang,
-        (adminPassword: string) =>
-          `${locale.organization.add.adminLogin}: admin_${form.values.spec}\n${locale.organization.add.adminPassword}: ${adminPassword}`,
+        (response: boolean) => '',
         {
           spec: form.values.spec,
           title: form.values.title,

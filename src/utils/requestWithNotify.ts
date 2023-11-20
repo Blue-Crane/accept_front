@@ -12,7 +12,7 @@ import {
 import { IAvailableLang } from '@custom-types/ui/ILocale';
 import { callback, setter } from '@custom-types/ui/atomic';
 
-const defaultAutoClose = 5000;
+export const DEFAULT_AUTO_CLOSE = 5000;
 
 export const requestWithNotify = <T, V>(
   endpoint: string,
@@ -39,7 +39,7 @@ export const requestWithNotify = <T, V>(
         id,
         title: locale.success,
         message: message(res.response),
-        autoClose: defaultAutoClose,
+        autoClose: DEFAULT_AUTO_CLOSE,
         ...params,
       });
       if (onSuccess) onSuccess(res.response);
@@ -52,7 +52,7 @@ export const requestWithNotify = <T, V>(
           res.detail.description[lang] != undefined
             ? res.detail.description[lang]
             : res.detail,
-        autoClose: defaultAutoClose,
+        autoClose: DEFAULT_AUTO_CLOSE,
         ...params,
       });
     }

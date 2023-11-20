@@ -10,8 +10,8 @@ import {
   TextInput,
 } from '@ui/basics';
 import { IOrganizationAdd } from '@custom-types/data/IOrganization';
-import { FileInput } from '@mantine/core';
 import { UseFormReturnType, useForm } from '@mantine/form';
+import ImageUploader from '@ui/ImageUploader/ImageUploader';
 
 const Form: FC<{
   handleSubmit: setter<UseFormReturnType<IOrganizationAdd>>;
@@ -46,7 +46,9 @@ const Form: FC<{
         name={'description'}
       />
       <DateTimePicker {...form.getInputProps('active_until')} />
-      <FileInput />
+      <ImageUploader
+        setUrl={(url: string) => form.setFieldValue('logo', url)}
+      />
       <Button onClick={() => handleSubmit(form)} />
     </div>
   );
