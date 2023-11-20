@@ -211,7 +211,7 @@ const Table: FC<{
         noDefault
           ? {}
           : {
-              width: '80vw',
+              minWidth: '80vw',
               margin: 'var(--spacer-s) 10vw 10vh 10vw',
             }
       }

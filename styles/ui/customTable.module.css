@@ -101,3 +101,13 @@
 .title:hover {
   color: initial;
 }
+
+.organization {
+  text-decoration: none;
+  text-align: left;
+  color: var(--primary);
+}
+
+.organization:hover {
+  color: var(--secondary);
+}

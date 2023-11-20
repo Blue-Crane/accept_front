@@ -1,4 +1,5 @@
 import { IAssessmentType, ITournamentStatus } from './atomic';
+import { IOrganizationDisplay } from './IOrganization';
 import { ITag } from './ITag';
 import { ITaskDisplay, ITaskDisplayWithPublic } from './ITask';
 
@@ -11,6 +12,7 @@ export interface ITournamentDisplay {
   spec: string;
   author: string;
   title: string;
+  organization: IOrganizationDisplay;
 
   tags: ITag[];
 
@@ -62,7 +64,12 @@ export interface ITournamentEditBundle {
 export interface ITournamentAdd
   extends Omit<
     ITournament,
-    'tasks' | 'status' | 'tags' | 'teamsNumber' | 'banned'
+    | 'tasks'
+    | 'status'
+    | 'tags'
+    | 'teamsNumber'
+    | 'banned'
+    | 'organization'
   > {
   tasks: string[];
   tags: string[];
@@ -73,6 +80,7 @@ export interface ITournamentAdd
   frozeResults: Date;
 
   shouldPenalizeAttempt: boolean;
+  organization: string;
 }
 
 export interface ITournamentEdit

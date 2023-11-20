@@ -79,7 +79,23 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     allowMiddleState: true,
     hidable: false,
     hidden: false,
-    size: 6,
+    size: 9,
+  },
+  {
+    label: locale.tournament.list.organization,
+    key: 'organization',
+    sortable: true,
+    sortFunction: (a: any, b: any) =>
+      a.organization.value > b.organization.value
+        ? 1
+        : a.organization.value == b.organization.value
+        ? 0
+        : -1,
+    sorted: 0,
+    allowMiddleState: true,
+    hidable: false,
+    hidden: false,
+    size: 3,
   },
   {
     label: locale.tournament.list.author,
@@ -91,8 +107,8 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     sorted: 0,
     allowMiddleState: true,
     hidable: true,
-    hidden: false,
-    size: 2,
+    hidden: true,
+    size: 3,
   },
   {
     label: locale.tournament.list.start,
@@ -109,7 +125,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     allowMiddleState: true,
     hidable: true,
     hidden: false,
-    size: 3,
+    size: 4,
   },
   {
     label: locale.tournament.list.end,
@@ -126,7 +142,7 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     allowMiddleState: true,
     hidable: true,
     hidden: false,
-    size: 3,
+    size: 4,
   },
   {
     label: locale.tournament.list.maxTeamSize,
@@ -218,6 +234,39 @@ const processData = (
               </span>
             )}
           </div>
+        ),
+      },
+      organization: {
+        value: tournament.organization.spec,
+        display: (
+          <Link
+            href={`/organization/${tournament.organization.spec}`}
+            className={tableStyles.organization}
+          >
+            <Tip
+              label={tournament.organization.title}
+              position="top-start"
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 'var(--spacer-xxs)',
+                }}
+              >
+                {!!tournament.organization.logo && (
+                  <img
+                    width="30px"
+                    height="30px"
+                    src={tournament.organization.logo}
+                    alt={''}
+                  />
+                )}
+                <span>{tournament.organization.spec}</span>
+              </div>
+            </Tip>
+          </Link>
         ),
       },
     })

@@ -5,5 +5,6 @@ export const list = {
   end: 'Окончание',
   status: 'Статус',
   participantsNumber: 'Участники',
-  maxTeamSize: 'Размер команды',
+  maxTeamSize: 'В команде',
+  organization: 'Организация',
 };

@@ -6,4 +6,5 @@ export const list = {
   status: 'Status',
   participantsNumber: 'Participants',
   maxTeamSize: 'Team size',
+  organization: 'Organization',
 };

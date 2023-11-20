@@ -36,9 +36,9 @@ const initialColumns = (locale: ILocale): ITableColumn[] => [
     key: 'organization',
     sortable: true,
     sortFunction: (a: any, b: any) =>
-      a.title.value > b.title.value
+      a.organization.value > b.organization.value
         ? 1
-        : a.title.value == b.title.value
+        : a.organization.value == b.organization.value
         ? 0
         : -1,
     sorted: 0,
@@ -153,7 +153,7 @@ const refactorTask = (task: ITaskDisplay): any => ({
     display: (
       <Link
         href={`/organization/${task.organization.spec}`}
-        className={tableStyles.title}
+        className={tableStyles.organization}
       >
         <Tip label={task.organization.title} position="top-start">
           <div

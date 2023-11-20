@@ -93,6 +93,7 @@ function TournamentAdd(props: ITournamentAddBundle) {
         frozeResults: form.values.frozeResults,
         security: +form.values.security,
         maxTeamSize: +form.values.maxTeamSize,
+        organization: '',
       };
 
       requestWithNotify<ITournamentAdd, string>(
