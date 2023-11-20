@@ -1,6 +1,7 @@
 export const developer = {
   feedbackList: 'Обратная связь',
   notificationList: 'Уведомления',
+  organizationList: 'Организации',
   executor: 'Основная база данных',
   analytics: {
     title: 'Аналитика',

@@ -29,6 +29,7 @@ import { getLocalDate } from '@utils/datetime';
 import { Tip } from '@ui/basics';
 import { useUser } from '@hooks/useUser';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Item {
   value: any;
@@ -256,9 +257,9 @@ const processData = (
                 }}
               >
                 {!!tournament.organization.logo && (
-                  <img
-                    width="30px"
-                    height="30px"
+                  <Image
+                    width={30}
+                    height={30}
                     src={tournament.organization.logo}
                     alt={''}
                   />

@@ -13,6 +13,7 @@ import VerdictWrapper from '@ui/VerdictWrapper/VerdictWrapper';
 import Link from 'next/link';
 import tableStyles from '@styles/ui/customTable.module.css';
 import { Tip } from '@ui/basics';
+import Image from 'next/image';
 
 const initialColumns = (locale: ILocale): ITableColumn[] => [
   {
@@ -165,9 +166,9 @@ const refactorTask = (task: ITaskDisplay): any => ({
             }}
           >
             {!!task.organization.logo && (
-              <img
-                width="30px"
-                height="30px"
+              <Image
+                width={30}
+                height={30}
                 src={task.organization.logo}
                 alt={''}
               />

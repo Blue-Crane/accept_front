@@ -1,0 +1,12 @@
+.buttonWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacer-l);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-s);
+}

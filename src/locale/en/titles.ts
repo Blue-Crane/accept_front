@@ -48,4 +48,9 @@ export const titles = {
   },
   courses: 'Courses',
   feedback: 'Feedback',
+  organization: {
+    list: 'Organizations',
+    add: 'Add organization',
+    edit: 'Edit organization',
+  },
 };

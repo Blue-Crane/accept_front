@@ -30,6 +30,7 @@ import { contacts } from './contacts';
 import { executor } from './executor';
 import { tip } from './tip';
 import { team } from './team';
+import { organization } from './organization';
 
 const en = {
   accept: 'Accept',
@@ -102,6 +103,7 @@ const en = {
   executor,
   tip,
   team,
+  organization,
 };
 
 export default en;

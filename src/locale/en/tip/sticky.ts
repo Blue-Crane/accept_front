@@ -45,4 +45,9 @@ export const sticky = {
   team: {
     delete: 'Delete the team',
   },
+  organization: {
+    add: 'Create organization',
+    edit: 'Edit organization',
+    delete: 'Delete organization',
+  },
 };

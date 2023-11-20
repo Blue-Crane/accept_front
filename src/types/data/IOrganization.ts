@@ -7,6 +7,8 @@ export interface IOrganization {
   description: string;
   principal: string;
   email: string;
+  created: Date;
+  active_until: Date;
 }
 
 export interface IOrganizationDisplay {
@@ -17,4 +19,13 @@ export interface IOrganizationDisplay {
 export interface IOrganizationDisplayWithRole {
   organization: IOrganizationDisplay;
   role: IRole;
+}
+
+export interface IOrganizationAdd {
+  spec: string;
+  logo: string;
+  title: string;
+  description: string;
+  email: string;
+  active_until: Date;
 }

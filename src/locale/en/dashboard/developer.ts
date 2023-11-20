@@ -1,6 +1,7 @@
 export const developer = {
   feedbackList: 'Feedbacks',
   notificationList: 'Notifications',
+  organizationList: 'Organizations',
   executor: 'Main database',
   analytics: {
     title: 'Analytics',

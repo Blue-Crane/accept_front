@@ -3,6 +3,7 @@ import { FC, memo, useMemo } from 'react';
 import {
   BellRinging,
   DeviceAnalytics,
+  ReportMoney,
   Terminal,
   TestPipe,
   TestPipe2,
@@ -16,6 +17,7 @@ import Executor from './Executor/Executor';
 import CurrentAttempts from './CurrentAttempts/CurrentAttempts';
 import Analytics from './Analytics/Analytics';
 import AllAttempts from './AllAttempts/AllAttempts';
+import OrganizationList from './OrganizationList/OrganizationList';
 // import styles from './developerDashboard.module.css'
 
 const DeveloperDashboard: FC<{}> = ({}) => {
@@ -27,6 +29,11 @@ const DeveloperDashboard: FC<{}> = ({}) => {
         page: <FeedbackList />,
         icon: <UserExclamation color="var(--secondary)" />,
         title: locale.dashboard.developer.feedbackList,
+      },
+      {
+        page: <OrganizationList noDefault />,
+        icon: <ReportMoney color="var(--secondary)" />,
+        title: locale.dashboard.developer.organizationList,
       },
       {
         page: <CurrentAttempts />,
@@ -43,6 +50,7 @@ const DeveloperDashboard: FC<{}> = ({}) => {
         icon: <BellRinging color="var(--secondary)" />,
         title: locale.dashboard.developer.notificationList,
       },
+
       {
         page: <Executor />,
         icon: <Terminal color="var(--secondary)" />,

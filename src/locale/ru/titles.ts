@@ -48,4 +48,9 @@ export const titles = {
   },
   courses: 'Курсы',
   feedback: 'Обратная связь',
+  organization: {
+    list: 'Организации',
+    add: 'Создание организации',
+    edit: 'Редактирование организации',
+  },
 };
