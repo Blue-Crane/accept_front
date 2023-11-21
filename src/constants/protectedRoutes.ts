@@ -83,5 +83,6 @@ export const protectedRoutesInfo: {
     checkRead('developer_dashboard', headers, pathname, searchParams),
   '/organization/add': (_, headers, pathname, searchParams) =>
     checkRead('developer_dashboard', headers, pathname, searchParams),
+  '/organization/edit': checkWrite,
   '/attempt': checkRead,
 };
