@@ -1,3 +1,4 @@
+import { IUserDisplay } from './IUser';
 import { IRole } from './atomic';
 
 export interface IOrganization {
@@ -6,6 +7,17 @@ export interface IOrganization {
   title: string;
   description: string;
   principal: string;
+  email: string;
+  created: Date;
+  active_until: Date;
+}
+
+export interface IOrganizationFull {
+  spec: string;
+  logo: string;
+  title: string;
+  description: string;
+  principal: IUserDisplay;
   email: string;
   created: Date;
   active_until: Date;

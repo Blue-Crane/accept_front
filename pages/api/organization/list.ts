@@ -8,6 +8,6 @@ export default async function OrganizationsListDeveloper(
   await fetchWrapper({
     req: req,
     res: res,
-    url: 'api/organization',
+    url: 'api/organizations',
   });
 }

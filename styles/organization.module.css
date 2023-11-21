@@ -1,0 +1,38 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 80%;
+  gap: var(--spacer-l);
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-l);
+}
+
+.logo {
+  border: none;
+}
+
+.title {
+  color: var(--primary);
+  margin-bottom: var(--spacer-xxs);
+}
+
+.spec {
+  color: #000000aa;
+  margin-bottom: var(--spacer-s);
+}
+
+.adminWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacer-xxs);
+}
+
+.admin {
+  text-decoration: none;
+  color: var(--primary);
+}
