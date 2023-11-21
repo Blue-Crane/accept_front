@@ -39,5 +39,8 @@ export interface IOrganizationAdd {
   title: string;
   description: string;
   email: string;
+  principal: string;
   active_until: Date;
 }
+
+export interface IOrganizationEdit extends IOrganizationAdd {}

@@ -1,13 +1,13 @@
 import { ActionIcon, Affix } from '@mantine/core';
 import { FC, ReactNode, memo } from 'react';
-import { pureCallback } from '@custom-types/ui/atomic';
+import { setter } from '@custom-types/ui/atomic';
 import { useWidth } from '@hooks/useWidth';
 import { STICKY_SIZES } from '@constants/Sizes';
 import { Tip } from '@ui/basics';
 import styles from './sticky.module.css';
 import Link from 'next/link';
 
-type positions = {
+type IStickyPosition = {
   bottom: number;
   right: number;
 };
@@ -15,9 +15,9 @@ type positions = {
 const SingularSticky: FC<{
   icon: ReactNode;
   color?: string;
-  onClick?: pureCallback;
+  onClick?: setter<any>;
   href?: string;
-  position?: positions;
+  position?: IStickyPosition;
   description: string;
   classNames?: any;
 }> = ({

@@ -6,10 +6,11 @@ import { FC, memo } from 'react';
 
 const RestInfo: FC<{
   form: UseFormReturnType<IOrganizationAdd>;
-}> = ({ form }) => {
+  isEdit?: boolean;
+}> = ({ form, isEdit }) => {
   const { locale } = useLocale();
   return (
-    <div>
+    <>
       <TextInput
         label={locale.organization.form.email}
         {...form.getInputProps('email')}
@@ -19,11 +20,18 @@ const RestInfo: FC<{
         form={form}
         name={'description'}
       />
-      <DateTimePicker
-        label={locale.organization.form.activeUntil}
-        {...form.getInputProps('active_until')}
-      />
-    </div>
+      {!isEdit ? (
+        <DateTimePicker
+          label={locale.organization.form.activeUntil}
+          {...form.getInputProps('active_until')}
+        />
+      ) : (
+        <TextInput
+          label={locale.organization.form.principal}
+          {...form.getInputProps('principal')}
+        />
+      )}
+    </>
   );
 };
 

@@ -10,7 +10,7 @@ const MainInfo: FC<{
 }> = ({ form }) => {
   const { locale } = useLocale();
   return (
-    <div>
+    <>
       <TextInput
         label={locale.organization.form.spec}
         {...form.getInputProps('spec')}
@@ -23,7 +23,7 @@ const MainInfo: FC<{
         label={locale.organization.form.logo}
         setUrl={(url: string) => form.setFieldValue('logo', url)}
       />
-    </div>
+    </>
   );
 };
 

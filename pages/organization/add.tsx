@@ -9,7 +9,7 @@ import {
 } from '@utils/notificationFunctions';
 import Title from '@ui/Title/Title';
 import { IOrganizationAdd } from '@custom-types/data/IOrganization';
-import Form from '@components/Organization/Form';
+import Form from '@components/Organization/Form/Form';
 
 const initialValues: IOrganizationAdd = {
   spec: '',
@@ -18,6 +18,7 @@ const initialValues: IOrganizationAdd = {
   description: '',
   email: '',
   active_until: new Date(),
+  principal: '',
 };
 
 function AddOrganization() {
@@ -47,6 +48,7 @@ function AddOrganization() {
           logo: form.values.logo,
           email: form.values.email,
           active_until: form.values.active_until,
+          principal: form.values.principal,
         },
         () => {},
         { autoClose: false }

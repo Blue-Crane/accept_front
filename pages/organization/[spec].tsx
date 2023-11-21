@@ -3,56 +3,61 @@ import { ReactNode } from 'react';
 import { GetServerSideProps } from 'next';
 import { getApiUrl } from '@utils/getServerUrl';
 import { IOrganizationFull } from '@custom-types/data/IOrganization';
-import styles from '@styles/organization.module.css';
-import Image from 'next/image';
-import Link from 'next/link';
 import Title from '@ui/Title/Title';
+import { useLocale } from '@hooks/useLocale';
+import { useUser } from '@hooks/useUser';
+import Sticky, { IStickyAction } from '@ui/Sticky/Sticky';
+import { Pencil, Trash } from 'tabler-icons-react';
+import { STICKY_SIZES } from '@constants/Sizes';
+import { useWidth } from '@hooks/useWidth';
+import SpecView from '@components/Organization/SpecView';
 
-function Task(organization: IOrganizationFull) {
+function Organization(organization: IOrganizationFull) {
+  const { locale } = useLocale();
+  const { isDeveloper } = useUser();
+  const { width } = useWidth();
+
+  const developerActions: IStickyAction[] = [
+    {
+      color: 'green',
+      href: `/organization/edit/${organization.spec}`,
+      icon: (
+        <Pencil
+          width={STICKY_SIZES[width] / 3}
+          height={STICKY_SIZES[width] / 3}
+        />
+      ),
+      description: locale.tip.sticky.organization.edit,
+    },
+    {
+      color: 'red',
+      icon: (
+        <Trash
+          width={STICKY_SIZES[width] / 3}
+          height={STICKY_SIZES[width] / 3}
+        />
+      ),
+      onClick: () => {},
+      description: locale.tip.sticky.organization.delete,
+    },
+  ];
+
   return (
     <>
-      <Title title={`Организация ${organization.title}`} />
-      <div className={styles.wrapper}>
-        <div className={styles.header}>
-          <div className={styles.logo}>
-            <Image
-              src={organization.logo}
-              width={125}
-              height={125}
-              alt={`logo of ${organization.spec}`}
-            />
-          </div>
-          <div className={styles.name}>
-            <h1 className={styles.title}>{organization.title}</h1>
-            <div className={styles.spec}>{organization.spec}</div>
-
-            <div className={styles.adminWrapper}>
-              {'Admin: '}
-              <Link
-                href={`/profile/${organization.principal.login}`}
-                className={styles.admin}
-              >
-                {organization.principal.shortName}
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div
-          className={styles.description}
-          dangerouslySetInnerHTML={{
-            __html: organization.description,
-          }}
-        />
-      </div>
+      <Title
+        title={`${locale.titles.organization.spec} ${organization.title}`}
+      />
+      {isDeveloper && <Sticky actions={developerActions} />}
+      <SpecView organization={organization} />
     </>
   );
 }
 
-Task.getLayout = (page: ReactNode) => {
+Organization.getLayout = (page: ReactNode) => {
   return <DefaultLayout>{page}</DefaultLayout>;
 };
 
-export default Task;
+export default Organization;
 
 const API_URL = getApiUrl();
 

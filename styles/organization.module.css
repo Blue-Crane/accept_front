@@ -19,11 +19,13 @@
 .title {
   color: var(--primary);
   margin-bottom: var(--spacer-xxs);
+  font-size: var(--font-size-xl);
 }
 
 .spec {
   color: #000000aa;
   margin-bottom: var(--spacer-s);
+  font-size: var(--font-size-m);
 }
 
 .adminWrapper {

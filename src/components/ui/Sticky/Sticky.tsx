@@ -7,6 +7,7 @@ import { DotsVertical, X } from 'tabler-icons-react';
 import { setter } from '@custom-types/ui/atomic';
 import { STICKY_SIZES } from '@constants/Sizes';
 import { useWidth } from '@hooks/useWidth';
+import SingularSticky from './SingularSticky';
 
 export interface IStickyAction {
   icon: ReactNode;
@@ -25,6 +26,11 @@ const Sticky: FC<{
   const [visible, setVisible] = useState(false);
   const ref = useClickOutside(() => setVisible(false));
   const { width } = useWidth();
+
+  if (actions.length == 1) {
+    return <SingularSticky classNames={classNames} {...actions[0]} />;
+  }
+
   return (
     <Affix
       ref={ref}

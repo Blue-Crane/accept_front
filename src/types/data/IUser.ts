@@ -28,6 +28,7 @@ export interface IUserContext {
   isStudent: boolean;
   isTeacher: boolean;
   isAdmin: boolean;
+  isDeveloper: boolean;
   signIn: (_: string, __: string) => Promise<Boolean>;
   signOut: pureCallback<Promise<Boolean>>;
   refresh: pureCallback<Promise<void>>;

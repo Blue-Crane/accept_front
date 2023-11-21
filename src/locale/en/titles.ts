@@ -52,5 +52,6 @@ export const titles = {
     list: 'Organizations',
     add: 'Add organization',
     edit: 'Edit organization',
+    spec: 'Organization',
   },
 };

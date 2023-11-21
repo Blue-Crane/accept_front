@@ -5,7 +5,7 @@ export const form = {
   email: 'Email',
   description: 'Description',
   activeUntil: 'Active until',
-
+  principal: 'Responsible person',
   steps: {
     labels: ['First step', 'Second step', 'Final step'],
     descriptions: ['Main info', 'Extra info', 'Preview'],
@@ -18,5 +18,6 @@ export const form = {
     description: 'Description is too short',
     email: 'Incorrect email',
     activeUntil: 'Select subscription ending date',
+    principal: 'Enter login of responsible person',
   },
 };

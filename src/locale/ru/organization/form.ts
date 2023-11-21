@@ -5,6 +5,7 @@ export const form = {
   email: 'Email',
   description: 'Описание',
   activeUntil: 'Дата окончания подписки',
+  principal: 'Ответственный',
   steps: {
     labels: ['Шаг первый', 'Шаг второй', 'Последний шаг'],
     descriptions: [
@@ -21,5 +22,6 @@ export const form = {
     description: 'Описание слишком короткое',
     email: 'Недопустимый email',
     activeUntil: 'Выберите дату окончания подписки',
+    principal: 'Введите логин ответсвенного',
   },
 };

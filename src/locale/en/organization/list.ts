@@ -1,6 +1,6 @@
 export const list = {
   spec: 'ID',
-  title: 'Название',
-  principal: 'Ответственный',
-  activeUntil: 'Подписка до',
+  title: 'Title',
+  principal: 'Responsible',
+  activeUntil: 'Subscribed until',
 };

@@ -2,8 +2,7 @@ import { setter } from '@custom-types/ui/atomic';
 import { useLocale } from '@hooks/useLocale';
 import { FC, useEffect } from 'react';
 
-
-import { IOrganizationAdd } from '@custom-types/data/IOrganization';
+import { IOrganizationEdit } from '@custom-types/data/IOrganization';
 import { UseFormReturnType, useForm } from '@mantine/form';
 import Preview from './Preview/Preview';
 import ExtraInfo from './ExtraInfo/ExtraInfo';
@@ -17,11 +16,18 @@ const stepFields = [
 ];
 
 const Form: FC<{
-  handleSubmit: setter<UseFormReturnType<IOrganizationAdd>>;
-  initialValues: IOrganizationAdd;
+  handleSubmit: setter<UseFormReturnType<IOrganizationEdit>>;
+  initialValues: IOrganizationEdit;
   buttonLabel: string;
   noDefault?: boolean;
-}> = ({ handleSubmit, initialValues, buttonLabel, noDefault }) => {
+  isEdit?: boolean;
+}> = ({
+  handleSubmit,
+  initialValues,
+  buttonLabel,
+  noDefault,
+  isEdit,
+}) => {
   const { locale } = useLocale();
 
   const form = useForm({
@@ -47,8 +53,12 @@ const Form: FC<{
           ? locale.organization.form.validation.email
           : null,
       active_until: (value) =>
-        !value
+        !isEdit && !value
           ? locale.organization.form.validation.activeUntil
+          : null,
+      principal: (value) =>
+        !!isEdit && value.length == 0
+          ? locale.organization.form.validation.principal
           : null,
     },
     validateInputOnBlur: true,
@@ -67,7 +77,7 @@ const Form: FC<{
       stepFields={stepFields}
       pages={[
         <MainInfo key={0} form={form} />,
-        <ExtraInfo key={1} form={form} />,
+        <ExtraInfo key={1} form={form} isEdit={isEdit} />,
         <Preview key={2} form={form} />,
       ]}
       labels={locale.organization.form.steps.labels}
