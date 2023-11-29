@@ -21,7 +21,7 @@ import { Plus } from 'tabler-icons-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getLocalDate } from '@utils/datetime';
-
+import styles from './organizationList.module.css';
 import Fuse from 'fuse.js';
 
 interface Item {
@@ -171,7 +171,17 @@ const processData = (
     },
     activeUntil: {
       value: organization.active_until,
-      display: <div>{getLocalDate(organization.active_until)}</div>,
+      display: (
+        <div
+          className={
+            new Date(organization.active_until) < new Date()
+              ? styles.expired
+              : ''
+          }
+        >
+          {getLocalDate(organization.active_until)}
+        </div>
+      ),
     },
   }));
 };
