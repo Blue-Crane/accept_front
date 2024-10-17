@@ -1,0 +1,17 @@
+.accounts {
+  display: flex;
+  flex-direction: row;
+}
+
+.dropdown_account_list_wrapper {
+  max-height: 200px;
+  overflow: scroll;
+}
+
+.accounts_dropdown_login {}
+
+.accounts_dropdown_organization {}
+
+.trash_icon:hover svg {
+  stroke: red;
+}

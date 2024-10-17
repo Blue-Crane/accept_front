@@ -1,25 +1,35 @@
-import { FC, memo } from 'react';
+import { FC, memo, useState } from 'react';
 import { Menu } from '@mantine/core';
 import { useUser } from '@hooks/useUser';
 import { useLocale } from '@hooks/useLocale';
 import { useBackNotifications } from '@hooks/useBackNotifications';
 import { Indicator, UserAvatar } from '@ui/basics';
 import styles from './profileMenu.module.css';
-import { Logout } from 'tabler-icons-react';
+import { Logout, Plus } from 'tabler-icons-react';
 import { accessLevels } from '@constants/protectedRoutes';
 import { menuLinks } from '@constants/ProfileMenuLinks';
 import Link from 'next/link';
 import AccountsMenu from './AccountsMenu/AccountsMenu';
+import ConfirmLogoutModal from '@ui/modals/ConfirmLogoutModal/ConfirmLogoutModal';
 
 const ProfileMenu: FC<{}> = ({}) => {
   const { locale } = useLocale();
-  const { user, signOut, accessLevel } = useUser();
+  // TODO переделать обратно на const после выполнения задачи
+  let { user, signOut, accessLevel, accounts } = useUser();
+
+  // accounts = [accounts[0]];
+  // accounts = [...accounts, ...accounts, ...accounts];
 
   const { unviewed } = useBackNotifications();
+
+  const [showMenu, toggleMenu] = useState<undefined | boolean>(
+    undefined
+  );
 
   return (
     <div className={styles.wrapper}>
       <Menu
+        opened={showMenu}
         trigger="hover"
         zIndex={1000}
         transitionProps={{ transition: 'scale-y', duration: 150 }}
@@ -29,6 +39,7 @@ const ProfileMenu: FC<{}> = ({}) => {
             <Indicator label={unviewed} disabled={unviewed <= 0}>
               <UserAvatar
                 login={user?.login}
+                organization={user?.organization}
                 alt={'User avatar'}
                 classNames={{ root: styles.avatar }}
               />
@@ -59,13 +70,41 @@ const ProfileMenu: FC<{}> = ({}) => {
               </Menu.Item>
             ))}
 
-          <Menu.Divider />
+          {/* TODO пока вставил сюда без локализации
+              потом исправить и сделать нормально
+              в каком порядке должны идти кнопки? 
+              то есть после какой добавить кнопку "Добавить аккаунт"?
+           */}
           <Menu.Item
-            onClick={signOut}
-            icon={<Logout color="var(--secondary)" size={20} />}
+            component={Link}
+            href={'/add_account'}
+            icon={<Plus color="var(--secondary)" size={20} />}
+            style={{ display: accounts.length == 1 ? '' : 'none' }}
           >
-            {locale.mainHeaderLinks.profileLinks.signOut}
+            {'Добавить аккаунт'}
           </Menu.Item>
+
+          <Menu.Divider />
+          <ConfirmLogoutModal
+            openMenu={() => {
+              toggleMenu(true);
+            }}
+            closeMenu={() => {
+              toggleMenu(undefined);
+            }}
+            confirm={signOut}
+            // TODO добавить локализацию
+            title={'Выход из сессии'}
+            modalText={
+              'Вы действительно хотите выйти из всех аккаунтов?'
+            }
+          >
+            <Menu.Item
+              icon={<Logout color="var(--secondary)" size={20} />}
+            >
+              {locale.mainHeaderLinks.profileLinks.signOut}
+            </Menu.Item>
+          </ConfirmLogoutModal>
         </Menu.Dropdown>
       </Menu>
       <AccountsMenu />
